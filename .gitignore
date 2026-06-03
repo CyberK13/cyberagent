@@ -216,3 +216,35 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ============================================================================
+# Project-specific: DO NOT push to OSS public
+# ============================================================================
+# Internal project memory & decision logs (三方 Claude dev-logs, contains V3
+# alpha discussions, KOL accuracy data references, V3 private business logic).
+# Restored locally from ~/tea-cyberoracle-private-archive-2026-05-28/ for
+# future reference but NEVER push to GitHub public.
+/docs/dev-logs/
+
+# Internal design specs (v1.0 → v3.0 strategy evolution, references V3 alpha
+# boundaries, KOL accuracy backtest, premium prompts architecture, etc.)
+/docs/design/
+
+# Internal tea protocol URL collection (bookmark, not for OSS)
+/docs/api-docs/
+
+# Early V3 spinoff analysis (2026-05-22) — references V3 internal modules,
+# desensitization checklist, alpha boundaries
+/docs/2026-*.md
+
+# Claude Code agent configuration — contains project preferences,
+# inter-agent collaboration model (Cowork / Dispatch / CC CLI), and
+# references private V3 design history
+/CLAUDE.md
+
+# Local archive directory (never push V3 alpha or experiments)
+/.archive/
+/_v3*/
+
+# pytest cache (build artifact, also already covered above)
+/.pytest_cache/

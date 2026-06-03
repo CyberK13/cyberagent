@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyberagent"
+version = "0.0.1"
+description = "TradingAgents for every market — a 5-department LLM analyst chain unified across stocks (A-share / HK / US) and crypto (token / contract). Bring your own LLM key."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "CyberK13", email = "klchen0113@gmail.com"},
+]
+keywords = [
+    "ai-agent",
+    "llm",
+    "equity-analysis",
+    "stock-analysis",
+    "crypto-analysis",
+    "multi-agent",
+    "langchain",
+    "crewai",
+    "mcp",
+    "chain-of-thought",
+    "investment-research",
+    "quantitative-finance",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "pydantic>=2.0,<3.0",
+    "httpx>=0.25",
+]
+
+[project.optional-dependencies]
+langchain = ["langchain-core>=0.3"]
+mcp       = ["mcp>=0.1"]
+openai    = ["openai>=1.0"]
+gemini    = ["google-genai>=0.2"]
+claude    = ["anthropic>=0.8"]
+test      = ["pytest>=7.0", "pytest-asyncio>=0.23"]
+dev       = ["pytest>=7.0", "pytest-asyncio>=0.23", "ruff>=0.6"]
+all       = [
+    "langchain-core>=0.3",
+    "mcp>=0.1",
+    "openai>=1.0",
+    "google-genai>=0.2",
+    "anthropic>=0.8",
+]
+
+[project.urls]
+Homepage      = "https://github.com/CyberK13/cyberagent"
+Source        = "https://github.com/CyberK13/cyberagent"
+Documentation = "https://github.com/CyberK13/cyberagent#readme"
+Issues        = "https://github.com/CyberK13/cyberagent/issues"
+Changelog     = "https://github.com/CyberK13/cyberagent/blob/main/CHANGELOG.md"
+
+[project.scripts]
+cyberagent = "cyberagent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"cyberagent" = ["py.typed"]
