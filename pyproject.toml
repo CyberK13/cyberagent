@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cyberagent"
 version = "0.0.1"
-description = "TradingAgents for every market — a 5-department LLM analyst chain unified across stocks (A-share / HK / US) and crypto (token / contract). Bring your own LLM key."
+description = "Physical-bottleneck, reverse-consensus investment analysis for every market — an LLM agent chain that traces any asset (A-share / HK / US stocks, crypto) to its supply-chain constraint and refuses to chase narrative-driven tops. Bring your own LLM key."
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
@@ -47,20 +47,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-langchain = ["langchain-core>=0.3"]
-mcp       = ["mcp>=0.1"]
-openai    = ["openai>=1.0"]
-gemini    = ["google-genai>=0.2"]
-claude    = ["anthropic>=0.8"]
-test      = ["pytest>=7.0", "pytest-asyncio>=0.23"]
-dev       = ["pytest>=7.0", "pytest-asyncio>=0.23", "ruff>=0.6"]
-all       = [
-    "langchain-core>=0.3",
-    "mcp>=0.1",
-    "openai>=1.0",
-    "google-genai>=0.2",
-    "anthropic>=0.8",
-]
+stocks   = ["yfinance>=0.2"]
+web      = ["flask>=3.0"]
+openai   = ["openai>=1.0"]
+gemini   = ["google-genai>=0.2"]
+claude   = ["anthropic>=0.8"]
+test     = ["pytest>=7.0"]
+dev      = ["pytest>=7.0", "ruff>=0.6"]
+all      = ["yfinance>=0.2", "flask>=3.0", "openai>=1.0", "google-genai>=0.2", "anthropic>=0.8"]
 
 [project.urls]
 Homepage      = "https://github.com/CyberK13/cyberagent"

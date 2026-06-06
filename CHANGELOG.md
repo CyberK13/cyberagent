@@ -7,17 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned for 0.1.0
-- `AnalystChain` main entry: `await chain.analyze(symbol)` returns `AnalystReport`
-- `AssetClassifier`: unified routing for A-share / HK / US / crypto / EVM contract
-- Data adapters: Tushare (CN) / yfinance + EDGAR (US) / yfinance (HK) / CoinGecko + DefiLlama (crypto)
-- 5 departments: industry / financial / risk / valuation / strategy
-- LLM adapter: OpenAI / Gemini / Claude / DeepSeek + custom
-- LangChain Tool wrapper (`cyberagent.langchain.analyze_asset_tool`)
-- MCP server (`python -m cyberagent.mcp_server`)
-- CLI (`cyberagent analyze NVDA --llm gemini`)
-- Pydantic models for structured output
-- 5-department system prompts — fully open-source (no paywall)
+### Added (working, pre-tag)
+- `AnalystChain.analyze(symbol)` → `AnalystReport`; Phase 0 positioning + 5-department
+  physical-bottleneck chain: `physical` · `human_dev` · `economics` · `financials` · `leaders`.
+- `AssetClassifier`: unified routing for A-share / HK / US / crypto / EVM contract.
+- Data adapters: yfinance (CN/HK/US, with price-action + analyst-consensus signals)
+  and CoinGecko + DefiLlama (crypto).
+- LLM adapter: OpenAI / Gemini / Claude / DeepSeek + custom + offline `MockLLM`;
+  Gemini real-time grounding on by default.
+- Open-source system prompts (the physical-bottleneck methodology + anti-narrative
+  discipline) + the *Situational Awareness* canon in `references/sa-canon.md`.
+- CLI (`cyberagent analyze …`) and a local web page (`cyberagent serve`) with
+  language + model selection.
+
+### Planned
+- LangChain tool wrapper; MCP server; EDGAR / Tushare / Etherscan adapters;
+  segment-level chains; structured per-department gate verdicts.
 
 ## [0.0.1] - 2026-05-28
 

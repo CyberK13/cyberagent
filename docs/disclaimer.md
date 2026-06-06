@@ -1,8 +1,8 @@
 # Disclaimer
 
 `cyberagent` is an OSS framework that uses Large Language Models to produce
-**structured investment research**. Fields like `final_decision`, `target_price`,
-`stop_loss`, and `confidence` are AI-generated educational outputs.
+**structured investment research**. Fields like `final_decision`, `confidence`,
+and the per-department reports are AI-generated educational outputs.
 
 **This is not financial advice.** No one at this project will trade for you, manage
 your money, or guarantee any return. LLMs make mistakes. Markets are unpredictable.

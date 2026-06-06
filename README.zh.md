@@ -2,138 +2,206 @@
 
 # 🧠 cyberagent
 
-### 面向*所有市场*的多智能体 LLM 投资分析框架
+### 物理瓶颈 · 反共识投资分析框架 —— 面向*所有市场*
 
-一支专业 LLM 智能体团队，分析**任意**标的——A 股、港股、美股、加密代币、链上合约——
-全部走同一套 **5 部门研究链**。自带 LLM key 即可运行。
+一条 LLM 智能体链，把任意标的一层层拆到卡住它所在产业的**物理约束**，核对市场
+**是否已经定价**，并**拒绝追逐叙事驱动的尖顶**。覆盖股票（A 股 / 港股 / 美股）与
+加密（代币 / 合约）。自带 LLM key 即可运行。
 
 [![PyPI](https://img.shields.io/pypi/v/cyberagent.svg)](https://pypi.org/project/cyberagent/)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-[English](README.md) | 中文
+### 🌐 Language / 语言
+
+[English](README.md) &nbsp;|&nbsp; **简体中文**
 
 </div>
 
 ---
 
-> ⏳ **0.0.1 占位版** — 包名已由 core contributor 锁定，正式 `0.1.0` 即将发布，关注本仓库。
+> 🚧 **活跃开发中。** 分析引擎已能端到端跑通；公开 API 在打 `0.1.0` 标签前仍可能调整。
 
 ---
 
-## 这是什么
+## 它和别的有什么不一样
 
-**cyberagent** 是一个多智能体 LLM 框架，模拟真实投研院的运作：部署一支专业的
-LLM 智能体团队——**5 部门链式分析**——协同评估一个标的，产出一份结构化投资报告。
+市面多数开源「AI 分析师」框架问的是*「这家公司好不好」*，产出一份教科书式 SWOT。
+cyberagent 问的是一个更锋利、**可证伪、反共识**的问题，且严格按顺序：
 
-市面上多数开源分析框架只覆盖**单一**市场（通常是美股）。cyberagent 把**任意**输入
-路由到对应的数据 adapter，再用**同一套**智能体团队跑通所有市场：
+> **物理瓶颈 → 唯一性 → 商业化 → 财务弹性 → 共识修正**
+>
+> *这个标的的供应链被哪个物理量卡住？它唯一吗？能变现吗？有没有非线性财务弹性？
+> 市场是不是已经把它定价了？*
 
-```mermaid
-flowchart TB
-    A["任意标的<br/>NVDA · 600519 · 0700 · BTC · 0x6B17…"] --> C{{AssetClassifier}}
-    C -->|A 股| M1[Tushare]
-    C -->|港股| M2[yfinance]
-    C -->|美股| M3[yfinance + EDGAR]
-    C -->|加密代币| M4[CoinGecko + DefiLlama]
-    C -->|EVM 合约| M5[Etherscan]
-    M1 --> CH["🏛️ 5 部门分析链"]
-    M2 --> CH
-    M3 --> CH
-    M4 --> CH
-    M5 --> CH
-    CH --> R["📋 AnalystReport"]
-```
+它建立在 Aschenbrenner《[Situational Awareness](https://situational-awareness.ai/)》
+的一个核心判断上：**AI 扩张是一个大规模*工业*进程**，被物理输入卡住——电力、变压器、
+HBM、CoWoS 先进封装、特定材料。cyberagent 把这个 thesis 落地：沿供应链一直拆到
+*「再多钱也买不到」*的环节，再施加强硬的反叙事纪律，避免把头条驱动的暴涨误当机会。
 
-> 本框架仅用于研究与教育目的。输出质量受所选 LLM、温度、数据质量等非确定因素影响。
-> **不构成任何财务、投资或交易建议。**
+它**不预测价格**。它给的是事实、可证伪的逻辑链、可监控的物理信号——最终决策由你做出。
 
 ---
 
-## 投研院 — 5 个部门
-
-cyberagent 把「这个标的值不值得关注」这个复杂任务拆解为专业角色。每个部门是一次
-独立的 LLM 调用，带自己的 system prompt 和工具；链式编排会把前序部门的报告向后传递，
-让后置部门在其基础上推理。
+## 它怎么工作
 
 ```mermaid
 flowchart LR
-    DATA[市场数据] --> D1["🏭 行业研究部"]
-    D1 --> D2["💰 财务分析部"]
-    D2 --> D3["⚠️ 风险管理部"]
-    D3 --> D4["📊 估值研究部"]
-    D4 --> D5["🎯 投资策略部"]
-    D5 --> OUT["📋 AnalystReport<br/>ACCUMULATE · HOLD · REDUCE · AVOID"]
+    IN["任意标的<br/>NVDA · 600519 · 0700 · BTC · 0x…"] --> CL{{AssetClassifier}}
+    CL --> AD["数据 adapter<br/>yfinance · CoinGecko · DefiLlama<br/>+ 价格行为 + 分析师共识"]
+    AD --> P0["Phase 0 · 资产定位<br/>核心业务 → 物理世界位置"]
+    P0 --> D1[物理世界] --> D2[人类发展] --> D3[经济学] --> D4[公司财务] --> D5[行业龙头]
+    D5 --> R["AnalystReport<br/>ACCUMULATE · HOLD · REDUCE · AVOID"]
 ```
 
-- **🏭 行业研究部** — 赛道定位、周期阶段、竞争格局、上下游与政策。
-- **💰 财务分析部** — 股票看营收与基本面；加密看代币经济、现金流 / TVL。
-- **⚠️ 风险管理部** — SWOT、监管、合约风险、巨鲸集中度、脱锚 / 黑天鹅情景。
-- **📊 估值研究部** — 相对估值、FDV / MC、NVT、历史区间、建仓区间。
-- **🎯 投资策略部** — 催化剂日历、叙事位置、仓位管理、明确的止损触发条件。
+**Phase 0 · 资产定位。** 先用基本面锁定这家公司到底卖什么，再把它钉到物理 / AI
+供应链的具体一层（材料 → 衬底 → 设备 → 封装 → 器件 → 模组 → 系统 → 终端）和一台
+具体机器（如 *GB300 NVL72 机架*、*1.6T 光链*）。
 
-5 个部门最终综合成一份 `AnalystReport`，含 `final_decision`、`confidence` 与各部门完整 markdown。
+**五个部门**顺序运行，每个都读上游报告：
+
+| 部门 | `key` | 职责 |
+|---|---|---|
+| 🪨 物理世界 | `physical` | 在 SA 瓶颈阶梯上定位绑定约束（电力 > CoWoS/HBM > 裸逻辑）；把标的分类为 **owner / adjacent / derivative / none**。非 owner ⇒ 降级，禁用稀缺租金逻辑。 |
+| 🌍 人类发展 | `human_dev` | 把需求放到 AGI / OOM 弧线上——早期（还有跑道）还是成熟/见顶？ |
+| 💱 经济学 | `economics` | ore-seller vs processor；**把涨幅拆成盈利增长 vs 倍数扩张**；识别估值框架切换；是否*已被定价*（Gray Rhino vs 响亮共识）？ |
+| 📈 公司财务 | `financials` | 基本面 + 财务弹性（线性 vs 非线性）；盈利异常先归因再当红旗。 |
+| 🎯 行业龙头 | `leaders` | 两轴判定——**瓶颈身份(a) vs 定价位置(b)**——steelman + Munger 反向、可监控退出信号、最终决策。 |
+
+### 纪律（它为什么不追尖顶）
+
+这正是教科书框架跳过的部分：
+
+- **实时搜索** —— 用 Gemini 时会*搜索价格为什么动*（催化剂、谁说的），而不是信模型记忆。
+- **价格行为护栏** —— 数据层标记抛物线 / 贴近高点的异动；几天内靠一句话翻倍的股票是**回避/观察**形态，不是买入形态。
+- **证据分级** —— 每个关键论断打 `Confirmed / Inferred / Weak` 标签；承重的 `Inferred` 会封顶置信度。
+- **两个独立维度** —— *「是不是瓶颈」*（分类）与*「该不该在这个价位买」*（定价）绝不混为一谈。非瓶颈在某价位也能是好交易；真瓶颈在尖顶也可能是坏交易。
+- **诚实标「晚了」** —— 抛物线 + 估值极值 + 共识响亮 ⇒ 标签是*「晚了/尖顶」*，不是机会。
+
+> 仅供教育与研究用途。输出质量受模型、数据及诸多非确定因素影响。**不构成任何
+> 财务、投资或交易建议。**
 
 ---
 
-## 用法
+## 快速开始
 
 ```python
 from cyberagent import AnalystChain
 
-chain = AnalystChain(llm='gemini', api_key='...')
+chain = AnalystChain(llm="gemini", api_key="...", lang="zh")  # 默认开启 grounding
 
-report = await chain.analyze('NVDA')          # 美股
-report = await chain.analyze('600519')         # A 股
-report = await chain.analyze('0700')           # 港股
-report = await chain.analyze('BTC')            # 加密
-report = await chain.analyze('0x6B17...')      # EVM 合约地址
+report = await chain.analyze("NVDA")     # 美股 · 或 600519(A股) / 0700(港股) / BTC / 0x6B17...
 
-print(report.final_decision)                   # ACCUMULATE / HOLD / REDUCE / AVOID
-print(report.departments['industry'].markdown)
+print(report.final_decision)             # ACCUMULATE / HOLD / REDUCE / AVOID
+print(report.confidence)                 # 0.0 - 1.0
+print(report.positioning)                # Phase 0 — 核心业务 + 物理位置
+print(report.departments["physical"].markdown)
+print(report.departments["leaders"].markdown)
 ```
 
-**一次 import，覆盖任意市场。**
+**一次 import，覆盖任意市场。** 用 `lang="zh"` / `"en"` 选报告语言，整份报告都按它生成。
 
 ---
 
 ## 安装
 
 ```bash
-pip install cyberagent
-pip install 'cyberagent[langchain]'   # LangChain Tool
-pip install 'cyberagent[mcp]'         # MCP server（Claude / Cursor）
+pip install 'cyberagent[stocks,gemini]'   # 推荐：股票数据 + 带 grounding 的 Gemini
 ```
 
----
+可选 extra：**`stocks`**（yfinance）· **`gemini` / `openai` / `claude`**（provider）·
+**`web`**（本地网页）。裸 `pip install cyberagent` 是零依赖核心。
+
+## 设置 API key
+
+cyberagent 是**自带 key**。Gemini 是默认、也是唯一带实时 grounding 的 provider——推荐。
+
+**1. 拿一个 key** —— Gemini 免费起步：
+[aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)。
+（其它 provider：[OpenAI](https://platform.openai.com/api-keys) ·
+[Anthropic](https://console.anthropic.com/) ·
+[DeepSeek](https://platform.deepseek.com/)。）
+
+**2. 配置它** —— 复制模板，把 key 填进去：
+
+```bash
+cp .env.example .env
+# 然后编辑 .env：   GOOGLE_API_KEY=你的key
+```
+
+CLI 和网页会自动加载 `.env`。在代码里也可以直接传：
+
+```python
+AnalystChain(llm="gemini", api_key="你的key")
+```
+
+**3. 跑起来** —— `cyberagent`（交互式）或 `cyberagent serve`（网页）。模型选择器会在
+每个 `.env` 里找到的 key 旁边显示 ✓。
 
 ## 自带 LLM key
 
-```python
-from cyberagent import LLMAdapter
+Gemini 是默认（也是唯一带实时 grounding 的 provider）。也可传任意 provider 或自定义 adapter：
 
-chain = AnalystChain(llm=LLMAdapter.openai(api_key='sk-...'))
-chain = AnalystChain(llm=LLMAdapter.gemini(api_key='...'))
-chain = AnalystChain(llm=LLMAdapter.claude(api_key='...'))
-chain = AnalystChain(llm=LLMAdapter.deepseek(api_key='...'))
+```python
+from cyberagent import AnalystChain, LLMAdapter, MockLLM
+
+AnalystChain(llm="gemini",   api_key="...")          # 默认，带搜索
+AnalystChain(llm="openai",   api_key="sk-...")
+AnalystChain(llm="claude",   api_key="...")
+AnalystChain(llm="deepseek", api_key="...")
+AnalystChain(llm=MockLLM())                           # 离线、无 key —— 体验流程
+
+class MyLLM(LLMAdapter):
+    async def complete(self, system: str, user: str) -> str: ...
+AnalystChain(llm=MyLLM())
 ```
+
+key 从环境变量 / 本地 `.env` 读取（见 [`.env.example`](.env.example)）。
+
+## CLI 与本地网页
+
+```bash
+cyberagent                                   # 交互式：选语言 + 选模型，再输代码
+cyberagent analyze NVDA --llm gemini --lang zh
+cyberagent analyze BTC  --depts physical,economics,leaders   # 子集，更快
+cyberagent serve                             # 本地网页 http://127.0.0.1:8000
+```
+
+CLI 和网页都有模型选择器，自动匹配 `.env` 里找到的 key（✓ / ✗）、逐部门实时进度、渲染报告。
 
 ---
 
-## Prompts 全部开源
+## 作为 Claude Skill 使用 —— 无需安装
 
-5 个部门的 system prompts 全部在 [`src/cyberagent/prompts/`](src/cyberagent/prompts/)，
-开源、无付费墙。开箱即用、端到端可跑，无需为任何东西付费。
+整套方法论还被打包成一个自包含的 **Claude Skill**，见 [`SKILL.md`](SKILL.md)。把它丢进
+Claude Code / Cursor（或任何能加载 skill 的 agent），让它分析一个标的——它会用纯
+prompt 形态跑同一条物理瓶颈链，不需要 Python。Python 包在此之上加了实时数据、grounding
+和 CLI / 网页。
+
+## 方法论与 prompts —— 完全开源
+
+没有付费墙。*怎么*狩猎物理瓶颈是框架知识，不是 alpha。完整的 system prompts 在
+[`src/cyberagent/prompts/departments.py`](src/cyberagent/prompts/departments.py)；
+《Situational Awareness》的锚（物理瓶颈阶梯 + OOM 发展弧线）提炼在
+[`references/sa-canon.md`](references/sa-canon.md)。
+
+---
+
+## 路线图
+
+- [ ] LangChain / LangGraph tool 封装
+- [ ] MCP server（Claude / Cursor）
+- [ ] EDGAR（美股文件）+ Tushare（A 股）+ Etherscan（EVM）adapter
+- [ ] 多分部公司的分部级链
+- [ ] 结构化的部门级闸门裁决（机器强制「停」）
 
 ---
 
 ## 免责声明
 
-`final_decision` / `target_price` / `stop_loss` / `confidence` 均为 **AI 生成的教育性输出**，
-不构成投资建议。LLM 会犯错，市场不可预测，请自行研究。详见
-[`docs/disclaimer.md`](docs/disclaimer.md)。
-
----
+`final_decision` / `confidence` 与各部门报告均为 **AI 生成的教育性输出**，不构成投资建议。
+LLM 会犯错，市场不可预测，请自行研究。作者与贡献者不对基于本软件的任何决策负责。
+详见 [`docs/disclaimer.md`](docs/disclaimer.md)。
 
 ## 协议
 

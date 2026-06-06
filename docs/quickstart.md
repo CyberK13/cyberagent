@@ -1,11 +1,13 @@
 # Quickstart
 
-Status: 0.0.1 placeholder. Full docs land at 0.1.0.
+The physical-bottleneck analyst chain. See the [README](../README.md) for the methodology.
 
 ## Install
 
 ```bash
 pip install cyberagent
+pip install 'cyberagent[stocks]'   # yfinance, for stock data
+pip install 'cyberagent[gemini]'   # Gemini + real-time grounding
 ```
 
 ## 60-second example
@@ -13,41 +15,51 @@ pip install cyberagent
 ```python
 from cyberagent import AnalystChain
 
-chain = AnalystChain(llm='gemini', api_key='YOUR_GEMINI_KEY')
+chain = AnalystChain(llm="gemini", api_key="YOUR_GEMINI_KEY", lang="en")
 
-report = await chain.analyze('NVDA')
+report = await chain.analyze("NVDA")
 
-print(report.final_decision)                      # ACCUMULATE / HOLD / REDUCE / AVOID
-print(report.confidence)                          # 0.0 - 1.0
-print(report.departments['industry'].markdown)    # 行业部 report
-print(report.departments['financial'].markdown)
-print(report.departments['risk'].markdown)
-print(report.departments['valuation'].markdown)
-print(report.departments['strategy'].markdown)
+print(report.final_decision)                       # ACCUMULATE / HOLD / REDUCE / AVOID
+print(report.confidence)                           # 0.0 - 1.0
+print(report.positioning)                          # Phase 0 — core business + physical position
+print(report.departments["physical"].markdown)     # bottleneck identity
+print(report.departments["economics"].markdown)    # priced-in? / move decomposition
+print(report.departments["leaders"].markdown)      # two-axis verdict
 ```
+
+Departments (the order they run in): `physical` · `human_dev` · `economics` · `financials` · `leaders`.
 
 ## Supported markets
 
-| Input | Example | Adapter |
+| Input | Example | Data source |
 |------|---------|----|
-| A-share (Shenzhen / Shanghai / 北交所) | `'600519'`, `'000001'` | Tushare |
-| HK stock | `'0700'`, `'9988'` | yfinance |
-| US stock | `'NVDA'`, `'AAPL'` | yfinance + EDGAR |
-| Crypto token | `'BTC'`, `'ETH'`, `'SOL'` | CoinGecko + DefiLlama |
-| EVM contract | `'0x6B17474E89094C44Da98b954EedeAC495271d0F'` | Etherscan + on-chain |
+| A-share (Shanghai / Shenzhen / 北交所) | `"600519"`, `"000001"` | yfinance |
+| HK stock | `"0700"`, `"9988"` | yfinance |
+| US stock | `"NVDA"`, `"AAPL"` | yfinance |
+| Crypto token | `"BTC"`, `"ETH"`, `"SOL"` | CoinGecko + DefiLlama |
+| EVM contract | `"0x6B17474E89094C44Da98b954EedeAC495271d0F"` | on-chain (LLM reasoning) |
 
 ## Bring your own LLM
 
 ```python
-from cyberagent import LLMAdapter
+from cyberagent import AnalystChain, LLMAdapter, MockLLM
 
-chain = AnalystChain(llm=LLMAdapter.openai(api_key='sk-...'))
-chain = AnalystChain(llm=LLMAdapter.gemini(api_key='...'))
-chain = AnalystChain(llm=LLMAdapter.claude(api_key='...'))
-chain = AnalystChain(llm=LLMAdapter.deepseek(api_key='...'))
+AnalystChain(llm="openai",   api_key="sk-...")
+AnalystChain(llm="gemini",   api_key="...")
+AnalystChain(llm="claude",   api_key="...")
+AnalystChain(llm="deepseek", api_key="...")
+AnalystChain(llm=MockLLM())            # offline, no key — try the flow
+```
+
+## CLI & web
+
+```bash
+cyberagent                       # interactive: pick language + model, then a symbol
+cyberagent analyze NVDA --llm gemini
+cyberagent serve                 # local web page at http://127.0.0.1:8000
 ```
 
 ## Prompts
 
-All 5-department system prompts ship in `src/cyberagent/prompts/` and are fully
-open-source — no API key, no paywall. The package works end-to-end out of the box.
+All department system prompts ship in `src/cyberagent/prompts/departments.py` and
+are fully open-source — no API key, no paywall.
