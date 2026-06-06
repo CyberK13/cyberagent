@@ -52,6 +52,14 @@ monitorable physical signals — the final decision is yours.
 
 ## How it works
 
+The chain is a **telescope** — it zooms from physical reality down to the specific,
+actionable name, one grounded LLM call per stage (each reads the upstream reports):
+
+> **Positioning → Physical World → Human Development → Economics → Company Financials → Leaders & Verdict**
+
+That telescope is how the five-step *method* above (bottleneck → uniqueness →
+commercialization → elasticity → consensus) actually gets executed.
+
 ```mermaid
 flowchart LR
     IN["Any asset<br/>NVDA · 600519 · 0700 · BTC · 0x…"] --> CL{{AssetClassifier}}
