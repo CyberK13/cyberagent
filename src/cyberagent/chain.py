@@ -70,7 +70,7 @@ class AnalystChain:
         *,
         api_key: Optional[str] = None,
         model: Optional[str] = None,
-        lang: str = "zh",
+        lang: str = "en",
         departments: Optional[Sequence[str]] = None,
         timeout: float = 10.0,
     ):

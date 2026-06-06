@@ -82,12 +82,12 @@ def _choose_model(default: str = "gemini") -> str:
     return raw
 
 
-def _choose_lang(default: str = "zh") -> str:
+def _choose_lang(default: str = "en") -> str:
     try:
         raw = input(f"> 语言 / Language [zh/en, 回车默认 {default}]: ").strip().lower()
     except (EOFError, KeyboardInterrupt):
         return default
-    return "en" if raw == "en" else "zh" if raw in ("", "zh") else raw
+    return raw if raw in ("zh", "en") else default
 
 
 def _progress(stage: str, label: str, status: str) -> None:
@@ -135,7 +135,7 @@ def main(argv=None) -> int:
     a = sub.add_parser("analyze", help="analyze a symbol")
     a.add_argument("symbol")
     a.add_argument("--llm", default="gemini", help="provider: gemini/openai/claude/deepseek/mock")
-    a.add_argument("--lang", default="zh", choices=["zh", "en"])
+    a.add_argument("--lang", default="en", choices=["zh", "en"])
     a.add_argument("--depts", default="", help="comma list, e.g. physical,economics,leaders")
     a.add_argument("--no-grounding", action="store_true", help="disable Gemini real-time search")
 
