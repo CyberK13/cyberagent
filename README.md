@@ -50,6 +50,46 @@ monitorable physical signals — the final decision is yours.
 
 ---
 
+## Intellectual foundations
+
+cyberagent stands on two ideas and turns them into a reproducible, falsifiable
+agent chain.
+
+### Leopold Aschenbrenner — *Situational Awareness* (the **why**)
+
+In *[Situational Awareness: The Decade Ahead](https://situational-awareness.ai/)*,
+Aschenbrenner argues that **AI scaling is a massive *industrial* process**, not a
+software one: every frontier model needs a bigger cluster, then bigger power
+plants, then bigger fabs. So the binding limits are **physical** — power,
+transformers, HBM, CoWoS packaging, specific materials — and effective compute
+compounds at roughly an order of magnitude (OOM) per year (GPT‑2 → GPT‑4 → ~2027
+AGI). The people with *situational awareness* build conviction from the trendlines
+**years before consensus prices them**. cyberagent treats the market as that
+physical system; the thesis is distilled in [`references/sa-canon.md`](references/sa-canon.md).
+
+### Serenity & Crux — the bottleneck method (the **how**)
+
+The practitioner discipline comes from supply-chain bottleneck hunters such as
+**Serenity** ([@aleabitoreddit](https://x.com/aleabitoreddit)) and **Crux Capital**.
+Instead of asking *"which stock goes up?"*, they **take the machine apart and look
+for the chokepoint**:
+
+> *What does the machine actually look like? Which part of its BOM is the hardest
+> to replace? If one supplier stopped shipping tomorrow, how long would the whole
+> chain wait?*
+
+- **Serenity** is *narrow and deep* — find one decisive choke point and concentrate.
+- **Crux** is *wide and disciplined* — map a ~6-layer stack and size each layer by execution certainty, separating proven executors from early optionality.
+
+cyberagent distills that discipline into a fixed, falsifiable chain that any LLM
+can run across any market.
+
+> We borrow their **method** — tracing a supply chain to its physical chokepoint,
+> asking *"where does the chain break"*, separating execution from optionality. We
+> do **not** impersonate them, quote them, or present their positions as fact.
+
+---
+
 ## How it works
 
 The chain is a **telescope** — it zooms from physical reality down to the specific,
