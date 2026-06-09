@@ -21,8 +21,8 @@ crypto (token / contract). Bring your own LLM key.
 
 ---
 
-> 🚧 **Active development.** The analysis engine works end-to-end today; the
-> public API may still shift before a tagged `0.1.0`.
+> 🚧 **Early release.** The analysis engine works end-to-end today; the
+> public API may still evolve before `1.0`.
 
 ---
 
@@ -143,11 +143,13 @@ This is the part textbook frameworks skip:
 ## Quickstart
 
 ```python
+import asyncio
+
 from cyberagent import AnalystChain
 
 chain = AnalystChain(llm="gemini", api_key="...", lang="en")  # grounding on by default
 
-report = await chain.analyze("NVDA")     # US · or 600519 (A-share) / 0700 (HK) / BTC / 0x6B17...
+report = asyncio.run(chain.analyze("NVDA"))   # US · or 600519 (A-share) / 0700 (HK) / BTC / 0x6B17...
 
 print(report.final_decision)             # ACCUMULATE / HOLD / REDUCE / AVOID
 print(report.confidence)                 # 0.0 - 1.0
@@ -155,6 +157,8 @@ print(report.positioning)                # Phase 0 — core business + physical 
 print(report.departments["physical"].markdown)
 print(report.departments["leaders"].markdown)
 ```
+
+(Inside Jupyter or an async app, call `await chain.analyze("NVDA")` directly.)
 
 **One import, any market.** Pick the report language with `lang="zh"` / `"en"`;
 the whole report is generated in it.
@@ -164,11 +168,12 @@ the whole report is generated in it.
 ## Install
 
 ```bash
-pip install 'cyberagent[stocks,gemini]'   # recommended: stock data + grounded Gemini
+pip install 'cyberagent[stocks,gemini,web]'   # recommended: stock data + grounded Gemini + local web UI
 ```
 
 Extras: **`stocks`** (yfinance) · **`gemini` / `openai` / `claude`** (providers) ·
-**`web`** (local UI). The bare `pip install cyberagent` is the zero-dependency core.
+**`web`** (local UI) · **`all`** (everything). The bare `pip install cyberagent` is
+the zero-dependency core.
 
 ## Set up your API key
 
@@ -181,13 +186,13 @@ with real-time grounding — recommended.
 [Anthropic](https://console.anthropic.com/) ·
 [DeepSeek](https://platform.deepseek.com/).)
 
-**2. Configure it** — copy the template and paste your key:
+**2. Configure it** — create a `.env` file in the folder you run from:
 
 ```bash
-cp .env.example .env
-# then edit .env:   GOOGLE_API_KEY=your_key_here
+echo 'GOOGLE_API_KEY=your_key_here' > .env
 ```
 
+(All supported variables are listed in [`.env.example`](.env.example).)
 The CLI and web UI auto-load `.env`. In code you can pass it directly instead:
 
 ```python
@@ -235,10 +240,18 @@ your `.env` (✓ / ✗), live per-department progress, and the rendered report.
 ## Use as a Claude Skill — no install
 
 The whole methodology is also packaged as a self-contained **Claude Skill** in
-[`SKILL.md`](SKILL.md). Drop it into Claude Code / Cursor (or any agent that loads
-skills) and ask it to analyze an asset — it runs the same physical-bottleneck chain
-in pure-prompt form, no Python required. The package adds live data, real-time
-grounding, and the CLI / web UI on top.
+[`SKILL.md`](SKILL.md) — it runs the same physical-bottleneck chain in pure-prompt
+form, no Python required. To install it in **Claude Code**:
+
+```bash
+mkdir -p ~/.claude/skills/physical-bottleneck-analyst
+curl -fsSL https://raw.githubusercontent.com/CyberK13/cyberagent/main/SKILL.md \
+  -o ~/.claude/skills/physical-bottleneck-analyst/SKILL.md
+```
+
+Then just ask: *"analyze NVDA"* — Claude picks the skill up automatically. (Any
+other agent that loads skills works the same way: give it `SKILL.md`.) The Python
+package adds live data, real-time grounding, and the CLI / web UI on top.
 
 ## Methodology & prompts — fully open
 
@@ -271,4 +284,4 @@ for any decision made based on this software. See [`docs/disclaimer.md`](docs/di
 
 MIT. See [LICENSE](LICENSE).
 
-<sub>Also published to the [tea Protocol](https://tea.xyz/) — see [`tea.yaml`](tea.yaml).</sub>
+<sub>Publication to the [tea Protocol](https://tea.xyz/) is planned.</sub>

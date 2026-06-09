@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cyberagent"
-version = "0.0.1"
+version = "0.1.0"
 description = "Physical-bottleneck, reverse-consensus investment analysis for every market — an LLM agent chain that traces any asset (A-share / HK / US stocks, crypto) to its supply-chain constraint and refuses to chase narrative-driven tops. Bring your own LLM key."
 readme = "README.md"
 requires-python = ">=3.9"

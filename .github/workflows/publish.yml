@@ -1,0 +1,42 @@
+# Publish to PyPI via Trusted Publishing (OIDC) — no API token stored anywhere.
+#
+# One-time setup on pypi.org (project owner):
+#   PyPI → Your account → Publishing → "Add a new pending publisher"
+#   project: cyberagent · owner: CyberK13 · repo: cyberagent
+#   workflow: publish.yml · environment: pypi
+#
+# Then publishing a GitHub Release (tag e.g. v0.1.0) triggers this workflow.
+
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install build
+      - run: python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # required for PyPI Trusted Publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

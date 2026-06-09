@@ -5,19 +5,20 @@ The physical-bottleneck analyst chain. See the [README](../README.md) for the me
 ## Install
 
 ```bash
-pip install cyberagent
-pip install 'cyberagent[stocks]'   # yfinance, for stock data
-pip install 'cyberagent[gemini]'   # Gemini + real-time grounding
+pip install 'cyberagent[stocks,gemini,web]'   # recommended: stock data + grounded Gemini + web UI
+pip install cyberagent                        # zero-dependency core only
 ```
 
 ## 60-second example
 
 ```python
+import asyncio
+
 from cyberagent import AnalystChain
 
 chain = AnalystChain(llm="gemini", api_key="YOUR_GEMINI_KEY", lang="en")
 
-report = await chain.analyze("NVDA")
+report = asyncio.run(chain.analyze("NVDA"))   # in Jupyter / async code: await chain.analyze("NVDA")
 
 print(report.final_decision)                       # ACCUMULATE / HOLD / REDUCE / AVOID
 print(report.confidence)                           # 0.0 - 1.0

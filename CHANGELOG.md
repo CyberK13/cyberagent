@@ -5,9 +5,11 @@ All notable changes to `cyberagent` are recorded here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.0] - 2026-06-10
 
-### Added (working, pre-tag)
+First real release.
+
+### Added
 - `AnalystChain.analyze(symbol)` → `AnalystReport`; Phase 0 positioning + 5-department
   physical-bottleneck chain: `physical` · `human_dev` · `economics` · `financials` · `leaders`.
 - `AssetClassifier`: unified routing for A-share / HK / US / crypto / EVM contract.
@@ -19,6 +21,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   discipline) + the *Situational Awareness* canon in `references/sa-canon.md`.
 - CLI (`cyberagent analyze …`) and a local web page (`cyberagent serve`) with
   language + model selection.
+
+### Changed
+- README / quickstart examples are now copy-paste runnable (`asyncio.run(...)`);
+  install docs recommend `cyberagent[stocks,gemini,web]`.
+- `.env.example` trimmed to the variables the code actually reads (4 LLM
+  providers); future adapter keys moved to a clearly-marked roadmap block.
+
+### Removed
+- `tea.yaml` placeholder constitution (tea Protocol registration is deferred).
 
 ### Planned
 - LangChain tool wrapper; MCP server; EDGAR / Tushare / Etherscan adapters;

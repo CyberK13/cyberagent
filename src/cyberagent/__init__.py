@@ -25,7 +25,7 @@ from .classifier import AssetClassifier, classify
 from .llm_adapter import LLMAdapter, MockLLM
 from .models import AnalystReport, AssetInfo, DeptReport
 
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 
 __all__ = [
     "__version__",
