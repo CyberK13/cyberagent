@@ -100,14 +100,7 @@ actionable name, one grounded LLM call per stage (each reads the upstream report
 That telescope is how the five-step *method* above (bottleneck → uniqueness →
 commercialization → elasticity → consensus) actually gets executed.
 
-```mermaid
-flowchart LR
-    IN["Any stock<br/>NVDA · 600519 · 0700"] --> CL{{AssetClassifier}}
-    CL --> AD["Data adapter<br/>yfinance<br/>+ price action + analyst consensus"]
-    AD --> P0["Phase 0 · Positioning<br/>core business → physical-world position"]
-    P0 --> D1[physical] --> D2[human_dev] --> D3[economics] --> D4[financials] --> D5[leaders]
-    D5 --> R["AnalystReport<br/>ACCUMULATE · HOLD · REDUCE · AVOID"]
-```
+![AnalystChain — physical-bottleneck analysis pipeline](docs/assets/analystchain-en.png)
 
 **Phase 0 — Positioning.** From the fundamentals, lock down what the company
 actually sells, then pin it to a specific layer of the physical / AI supply chain
