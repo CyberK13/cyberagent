@@ -100,7 +100,7 @@ actionable name, one grounded LLM call per stage (each reads the upstream report
 That telescope is how the five-step *method* above (bottleneck → uniqueness →
 commercialization → elasticity → consensus) actually gets executed.
 
-![AnalystChain — physical-bottleneck analysis pipeline](docs/assets/analystchain-en.png)
+![AnalystChain — physical-bottleneck analysis pipeline](https://raw.githubusercontent.com/CyberK13/cyberagent/main/docs/assets/analystchain-en.png)
 
 **Phase 0 — Positioning.** From the fundamentals, lock down what the company
 actually sells, then pin it to a specific layer of the physical / AI supply chain
