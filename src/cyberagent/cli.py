@@ -165,7 +165,7 @@ def main(argv=None) -> int:
         if not _has_key(env_key):
             print(f"\n⚠️  没找到 {env_key}。请在 .env 填入，或选其它模型 / mock。", file=sys.stderr)
     try:
-        symbol = input("\n> 输入代码 / Enter symbol (NVDA / 600519 / 0700 / BTC / 0x...): ").strip()
+        symbol = input("\n> 输入代码 / Enter symbol (NVDA / 600519 / 0700): ").strip()
     except (EOFError, KeyboardInterrupt):
         return 0
     if not symbol:

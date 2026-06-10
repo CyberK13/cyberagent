@@ -151,14 +151,14 @@ h2::before{content:"▸ ";color:var(--grn)}
 let LANG="en", LLM="gemini";
 const I18N={
   en:{lang:"Language",model:"Model",sym:"Symbol",analyze:"▸ ANALYZE",
-      ph:"NVDA / 600519 / 0700 / BTC / 0x...",conf:"confidence",
+      ph:"NVDA / 600519 / 0700",conf:"confidence",
       run:s=>`▸ analyzing ${s} · model=${LLM} · full 5-dept ~1-3 min, bottleneck-chain reasoning…`,
       stageRun:"… running",done:s=>`✓ COMPLETE · ${s}s`,
       foot:"cyberagent // local terminal · not financial advice",
       stages:["Positioning","Physical World","Human Development","Economics","Company Financials","Leaders & Verdict"],
       pos:"Positioning",proc:"analyzing",elapsed:"ELAPSED",eta:"ETA",etaFull:"~2-3 min (full 5-dept)",etaMock:"~1s (mock)"},
   zh:{lang:"语言",model:"模型",sym:"标的",analyze:"▸ 分析",
-      ph:"NVDA / 600519 / 0700 / BTC / 0x...",conf:"置信度",
+      ph:"NVDA / 600519 / 0700",conf:"置信度",
       run:s=>`▸ 分析 ${s} · model=${LLM} · 完整 5 部门约 1-3 分钟，物理瓶颈链推理中…`,
       stageRun:"… 运行中",done:s=>`✓ 完成 · ${s}s`,
       foot:"cyberagent // 本地终端 · 非投资建议",

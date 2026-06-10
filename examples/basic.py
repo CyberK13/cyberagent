@@ -15,7 +15,7 @@ from cyberagent import AnalystChain, MockLLM
 async def main() -> None:
     chain = AnalystChain(llm=MockLLM(), lang="zh")   # -> AnalystChain(llm="gemini", api_key=...)
 
-    report = await chain.analyze("BTC")              # or "NVDA" / "600519" / "0700" / "0x6B17..."
+    report = await chain.analyze("NVDA")             # or "600519" / "0700"
 
     print(f"asset        : {report.asset.type} ({report.market})")
     print(f"company      : {report.company_name}")

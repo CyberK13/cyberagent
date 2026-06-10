@@ -6,8 +6,8 @@
 
 A chain of LLM agents that traces any asset down to the **physical constraint**
 that caps its industry, checks whether the market has **already priced it**, and
-**refuses to chase a narrative-driven top**. Stocks (A-share / HK / US) and
-crypto (token / contract). Bring your own LLM key.
+**refuses to chase a narrative-driven top**. A-share / HK / US stocks.
+Bring your own LLM key.
 
 [![PyPI](https://img.shields.io/pypi/v/cyberagent.svg)](https://pypi.org/project/cyberagent/)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
@@ -102,8 +102,8 @@ commercialization → elasticity → consensus) actually gets executed.
 
 ```mermaid
 flowchart LR
-    IN["Any asset<br/>NVDA · 600519 · 0700 · BTC · 0x…"] --> CL{{AssetClassifier}}
-    CL --> AD["Data adapters<br/>yfinance · CoinGecko · DefiLlama<br/>+ price action + analyst consensus"]
+    IN["Any stock<br/>NVDA · 600519 · 0700"] --> CL{{AssetClassifier}}
+    CL --> AD["Data adapter<br/>yfinance<br/>+ price action + analyst consensus"]
     AD --> P0["Phase 0 · Positioning<br/>core business → physical-world position"]
     P0 --> D1[physical] --> D2[human_dev] --> D3[economics] --> D4[financials] --> D5[leaders]
     D5 --> R["AnalystReport<br/>ACCUMULATE · HOLD · REDUCE · AVOID"]
@@ -148,7 +148,7 @@ echo 'GOOGLE_API_KEY=your_key_here' > .env    # free key: aistudio.google.com/ap
 cyberagent                                     # interactive · or `cyberagent serve` for the local web UI
 ```
 
-Type `NVDA` / `600519` / `0700` / `BTC` / `0x...` and read the report. That's it.
+Type `NVDA` / `600519` / `0700` and read the report. That's it.
 
 ## Use it from Python
 
@@ -203,7 +203,7 @@ Extras: `stocks` (yfinance) · `gemini` / `openai` / `claude` (providers) ·
 
 ```bash
 cyberagent analyze NVDA --llm gemini --lang en
-cyberagent analyze BTC  --depts physical,economics,leaders   # subset, faster
+cyberagent analyze AAPL --depts physical,economics,leaders   # subset, faster
 cyberagent serve                              # local web UI at http://127.0.0.1:8000
 ```
 
@@ -245,7 +245,7 @@ development arc) is distilled in [`references/sa-canon.md`](references/sa-canon.
 
 - [ ] LangChain / LangGraph tool wrapper
 - [ ] MCP server (Claude / Cursor)
-- [ ] EDGAR (US filings) + Tushare (A-share) + Etherscan (EVM) adapters
+- [ ] EDGAR (US filings) + Tushare (A-share) adapters
 - [ ] Segment-level chains for conglomerates
 - [ ] Structured per-department gate verdicts (machine-enforced "stop")
 

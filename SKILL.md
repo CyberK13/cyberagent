@@ -1,11 +1,11 @@
 ---
 name: physical-bottleneck-analyst
-description: Use when the user wants reverse-consensus, falsifiable investment research on a stock or crypto asset — tracing it to the physical bottleneck that caps its industry, checking whether the market has already priced it, and refusing to chase narrative-driven tops. Anchored to Aschenbrenner's "Situational Awareness". Not financial advice.
+description: Use when the user wants reverse-consensus, falsifiable investment research on a stock — tracing it to the physical bottleneck that caps its industry, checking whether the market has already priced it, and refusing to chase narrative-driven tops. Anchored to Aschenbrenner's "Situational Awareness". Not financial advice.
 ---
 
 # Physical-Bottleneck Analyst
 
-Use this skill when the user wants to analyze an asset (stock or crypto) the way
+Use this skill when the user wants to analyze a stock the way
 the `cyberagent` framework does: not "is this a good company?" but a sharper,
 falsifiable, reverse-consensus question, answered in a fixed order.
 

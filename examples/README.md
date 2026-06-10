@@ -3,7 +3,6 @@
 Runnable examples will land in `0.1.0`:
 
 - `basic.py` — `await chain.analyze('NVDA')` and print the 5-dept report
-- `analyze_crypto.py` — same, with `'BTC'` and `'0x6B17...'`
 - `langchain_demo.py` — wire `analyze_asset_tool` into a LangGraph agent
 - `crewai_demo.py` — same, as a CrewAI Task
 - `mcp_server_demo.md` — instructions to run the MCP server with Claude / Cursor

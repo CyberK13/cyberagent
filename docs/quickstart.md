@@ -40,8 +40,6 @@ Departments (the order they run in): `physical` · `human_dev` · `economics` ·
 | A-share (Shanghai / Shenzhen / 北交所) | `"600519"`, `"000001"` | yfinance |
 | HK stock | `"0700"`, `"9988"` | yfinance |
 | US stock | `"NVDA"`, `"AAPL"` | yfinance |
-| Crypto token | `"BTC"`, `"ETH"`, `"SOL"` | CoinGecko + DefiLlama |
-| EVM contract | `"0x6B17474E89094C44Da98b954EedeAC495271d0F"` | on-chain (LLM reasoning) |
 
 ## Bring your own LLM
 
