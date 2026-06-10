@@ -140,102 +140,80 @@ This is the part textbook frameworks skip:
 
 ---
 
-## Quickstart
+## Quickstart — 30 seconds
+
+```bash
+pip install 'cyberagent[stocks,gemini,web]'
+echo 'GOOGLE_API_KEY=your_key_here' > .env    # free key: aistudio.google.com/app/apikey
+cyberagent                                     # interactive · or `cyberagent serve` for the local web UI
+```
+
+Type `NVDA` / `600519` / `0700` / `BTC` / `0x...` and read the report. That's it.
+
+## Use it from Python
 
 ```python
 import asyncio
-
 from cyberagent import AnalystChain
 
-chain = AnalystChain(llm="gemini", api_key="...", lang="en")  # grounding on by default
+chain = AnalystChain(llm="gemini", api_key="...", lang="en")
+report = asyncio.run(chain.analyze("NVDA"))
 
-report = asyncio.run(chain.analyze("NVDA"))   # US · or 600519 (A-share) / 0700 (HK) / BTC / 0x6B17...
-
-print(report.final_decision)             # ACCUMULATE / HOLD / REDUCE / AVOID
-print(report.confidence)                 # 0.0 - 1.0
-print(report.positioning)                # Phase 0 — core business + physical position
-print(report.departments["physical"].markdown)
+print(report.final_decision)                   # ACCUMULATE / HOLD / REDUCE / AVOID
 print(report.departments["leaders"].markdown)
 ```
 
-(Inside Jupyter or an async app, call `await chain.analyze("NVDA")` directly.)
+(Inside Jupyter or an async app, `await chain.analyze("NVDA")` directly. Pick the
+report language with `lang="en"` / `"zh"` — the whole report is generated in it.
+Full API: [`docs/quickstart.md`](docs/quickstart.md).)
 
-**One import, any market.** Pick the report language with `lang="zh"` / `"en"`;
-the whole report is generated in it.
+<details>
+<summary><b>More — other LLM providers · custom adapter · install options · CLI flags</b></summary>
 
----
+<br>
 
-## Install
-
-```bash
-pip install 'cyberagent[stocks,gemini,web]'   # recommended: stock data + grounded Gemini + local web UI
-```
-
-Extras: **`stocks`** (yfinance) · **`gemini` / `openai` / `claude`** (providers) ·
-**`web`** (local UI) · **`all`** (everything). The bare `pip install cyberagent` is
-the zero-dependency core.
-
-## Set up your API key
-
-cyberagent is **bring-your-own-key**. Gemini is the default and the only provider
-with real-time grounding — recommended.
-
-**1. Get a key** — Gemini is free to start:
-[aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
-(Other providers: [OpenAI](https://platform.openai.com/api-keys) ·
-[Anthropic](https://console.anthropic.com/) ·
-[DeepSeek](https://platform.deepseek.com/).)
-
-**2. Configure it** — create a `.env` file in the folder you run from:
-
-```bash
-echo 'GOOGLE_API_KEY=your_key_here' > .env
-```
-
-(All supported variables are listed in [`.env.example`](.env.example).)
-The CLI and web UI auto-load `.env`. In code you can pass it directly instead:
-
-```python
-AnalystChain(llm="gemini", api_key="your_key_here")
-```
-
-**3. Run it** — `cyberagent` (interactive) or `cyberagent serve` (web). The model
-picker shows a ✓ next to every key it found in your `.env`.
-
-## Bring your own LLM key
-
-Gemini is the default (and the only provider with real-time grounding). You can
-also pass any provider or a custom adapter:
+**Providers.** Gemini is the default and the only one with real-time grounding;
+any of these works:
 
 ```python
 from cyberagent import AnalystChain, LLMAdapter, MockLLM
 
-AnalystChain(llm="gemini",   api_key="...")          # default, grounded
 AnalystChain(llm="openai",   api_key="sk-...")
 AnalystChain(llm="claude",   api_key="...")
 AnalystChain(llm="deepseek", api_key="...")
-AnalystChain(llm=MockLLM())                           # offline, no key — try the flow
+AnalystChain(llm=MockLLM())                    # offline, no key — try the flow
 
 class MyLLM(LLMAdapter):
     async def complete(self, system: str, user: str) -> str: ...
 AnalystChain(llm=MyLLM())
 ```
 
-Keys are read from the environment / a local `.env` (see [`.env.example`](.env.example)).
+Keys come from the argument, the environment, or a local `.env`
+(all variables: [`.env.example`](.env.example)). Get one:
+[Gemini (free)](https://aistudio.google.com/app/apikey) ·
+[OpenAI](https://platform.openai.com/api-keys) ·
+[Anthropic](https://console.anthropic.com/) ·
+[DeepSeek](https://platform.deepseek.com/).
 
-## CLI & local web page
+**Install options.** Bare `pip install cyberagent` is the zero-dependency core.
+Extras: `stocks` (yfinance) · `gemini` / `openai` / `claude` (providers) ·
+`web` (local UI) · `all` (everything).
+
+**CLI.**
 
 ```bash
-cyberagent                                   # interactive: pick language + model, then a symbol
 cyberagent analyze NVDA --llm gemini --lang en
 cyberagent analyze BTC  --depts physical,economics,leaders   # subset, faster
-cyberagent serve                             # local web UI at http://127.0.0.1:8000
+cyberagent serve                              # local web UI at http://127.0.0.1:8000
 ```
 
-The CLI and web page show a model picker that auto-matches the API key found in
-your `.env` (✓ / ✗), live per-department progress, and the rendered report.
+The CLI and web UI auto-load `.env` and show a model picker (✓ next to every key
+found), live per-department progress, and the rendered report.
+
+</details>
 
 ---
+
 
 ## Use as a Claude Skill — no install
 

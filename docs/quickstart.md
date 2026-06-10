@@ -2,12 +2,15 @@
 
 The physical-bottleneck analyst chain. See the [README](../README.md) for the methodology.
 
-## Install
+## Install & run
 
 ```bash
-pip install 'cyberagent[stocks,gemini,web]'   # recommended: stock data + grounded Gemini + web UI
-pip install cyberagent                        # zero-dependency core only
+pip install 'cyberagent[stocks,gemini,web]'
+echo 'GOOGLE_API_KEY=your_key' > .env     # free key: aistudio.google.com/app/apikey
+cyberagent                                # interactive · or: cyberagent serve
 ```
+
+(Bare `pip install cyberagent` is the zero-dependency core.)
 
 ## 60-second example
 

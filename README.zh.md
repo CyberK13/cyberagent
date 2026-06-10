@@ -121,97 +121,75 @@ flowchart LR
 
 ---
 
-## 快速开始
+## 快速开始 —— 30 秒
+
+```bash
+pip install 'cyberagent[stocks,gemini,web]'
+echo 'GOOGLE_API_KEY=你的key' > .env          # 免费申请：aistudio.google.com/app/apikey
+cyberagent                                     # 交互式分析 · 或 `cyberagent serve` 打开本地网页
+```
+
+输入 `NVDA` / `600519` / `0700` / `BTC` / `0x...`，等报告。就这些。
+
+## 在 Python 里使用
 
 ```python
 import asyncio
-
 from cyberagent import AnalystChain
 
-chain = AnalystChain(llm="gemini", api_key="...", lang="zh")  # 默认开启 grounding
+chain = AnalystChain(llm="gemini", api_key="...", lang="zh")
+report = asyncio.run(chain.analyze("NVDA"))
 
-report = asyncio.run(chain.analyze("NVDA"))   # 美股 · 或 600519(A股) / 0700(港股) / BTC / 0x6B17...
-
-print(report.final_decision)             # ACCUMULATE / HOLD / REDUCE / AVOID
-print(report.confidence)                 # 0.0 - 1.0
-print(report.positioning)                # Phase 0 — 核心业务 + 物理位置
-print(report.departments["physical"].markdown)
+print(report.final_decision)                   # ACCUMULATE / HOLD / REDUCE / AVOID
 print(report.departments["leaders"].markdown)
 ```
 
-（在 Jupyter 或异步程序里，直接 `await chain.analyze("NVDA")` 即可。）
+（Jupyter / 异步程序里直接 `await chain.analyze("NVDA")`。用 `lang="zh"` / `"en"`
+选报告语言，整份报告都按它生成。完整 API 见 [`docs/quickstart.md`](docs/quickstart.md)。）
 
-**一次 import，覆盖任意市场。** 用 `lang="zh"` / `"en"` 选报告语言，整份报告都按它生成。
+<details>
+<summary><b>更多 —— 其它 LLM provider · 自定义 adapter · 安装选项 · CLI 参数</b></summary>
 
----
+<br>
 
-## 安装
-
-```bash
-pip install 'cyberagent[stocks,gemini,web]'   # 推荐：股票数据 + 带 grounding 的 Gemini + 本地网页
-```
-
-可选 extra：**`stocks`**（yfinance）· **`gemini` / `openai` / `claude`**（provider）·
-**`web`**（本地网页）· **`all`**（全部）。裸 `pip install cyberagent` 是零依赖核心。
-
-## 设置 API key
-
-cyberagent 是**自带 key**。Gemini 是默认、也是唯一带实时 grounding 的 provider——推荐。
-
-**1. 拿一个 key** —— Gemini 免费起步：
-[aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)。
-（其它 provider：[OpenAI](https://platform.openai.com/api-keys) ·
-[Anthropic](https://console.anthropic.com/) ·
-[DeepSeek](https://platform.deepseek.com/)。）
-
-**2. 配置它** —— 在你运行命令的目录下创建一个 `.env` 文件：
-
-```bash
-echo 'GOOGLE_API_KEY=你的key' > .env
-```
-
-（全部可用变量见 [`.env.example`](.env.example)。）
-CLI 和网页会自动加载 `.env`。在代码里也可以直接传：
-
-```python
-AnalystChain(llm="gemini", api_key="你的key")
-```
-
-**3. 跑起来** —— `cyberagent`（交互式）或 `cyberagent serve`（网页）。模型选择器会在
-每个 `.env` 里找到的 key 旁边显示 ✓。
-
-## 自带 LLM key
-
-Gemini 是默认（也是唯一带实时 grounding 的 provider）。也可传任意 provider 或自定义 adapter：
+**Provider。** Gemini 是默认、也是唯一带实时 grounding 的；以下都可用：
 
 ```python
 from cyberagent import AnalystChain, LLMAdapter, MockLLM
 
-AnalystChain(llm="gemini",   api_key="...")          # 默认，带搜索
 AnalystChain(llm="openai",   api_key="sk-...")
 AnalystChain(llm="claude",   api_key="...")
 AnalystChain(llm="deepseek", api_key="...")
-AnalystChain(llm=MockLLM())                           # 离线、无 key —— 体验流程
+AnalystChain(llm=MockLLM())                    # 离线、无 key —— 体验流程
 
 class MyLLM(LLMAdapter):
     async def complete(self, system: str, user: str) -> str: ...
 AnalystChain(llm=MyLLM())
 ```
 
-key 从环境变量 / 本地 `.env` 读取（见 [`.env.example`](.env.example)）。
+key 可以传参、走环境变量、或放本地 `.env`（全部变量见 [`.env.example`](.env.example)）。
+申请入口：[Gemini（免费）](https://aistudio.google.com/app/apikey) ·
+[OpenAI](https://platform.openai.com/api-keys) ·
+[Anthropic](https://console.anthropic.com/) ·
+[DeepSeek](https://platform.deepseek.com/)。
 
-## CLI 与本地网页
+**安装选项。** 裸 `pip install cyberagent` 是零依赖核心。extras：`stocks`（yfinance）·
+`gemini` / `openai` / `claude`（provider）· `web`（本地网页）· `all`（全部）。
+
+**CLI。**
 
 ```bash
-cyberagent                                   # 交互式：选语言 + 选模型，再输代码
 cyberagent analyze NVDA --llm gemini --lang zh
 cyberagent analyze BTC  --depts physical,economics,leaders   # 子集，更快
-cyberagent serve                             # 本地网页 http://127.0.0.1:8000
+cyberagent serve                              # 本地网页 http://127.0.0.1:8000
 ```
 
-CLI 和网页都有模型选择器，自动匹配 `.env` 里找到的 key（✓ / ✗）、逐部门实时进度、渲染报告。
+CLI 和网页会自动加载 `.env`，带模型选择器（找到的 key 旁显示 ✓）、逐部门实时进度、渲染报告。
+
+</details>
 
 ---
+
 
 ## 作为 Claude Skill 使用 —— 无需安装
 
