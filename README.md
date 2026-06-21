@@ -190,7 +190,10 @@ Keys come from the argument, the environment, or a local `.env`
 
 **Install options.** Bare `pip install cyberagent` is the zero-dependency core.
 Extras: `stocks` (yfinance) · `gemini` / `openai` / `claude` (providers) ·
-`web` (local UI) · `all` (everything).
+`web` (local UI) · `all` (everything). DeepSeek is OpenAI-API compatible, so it
+reuses the `openai` extra (`pip install 'cyberagent[openai]'`, then set
+`DEEPSEEK_API_KEY` and run `--llm deepseek`) — there is no separate `deepseek`
+extra.
 
 **CLI.**
 

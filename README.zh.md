@@ -169,6 +169,8 @@ key 可以传参、走环境变量、或放本地 `.env`（全部变量见 [`.en
 
 **安装选项。** 裸 `pip install cyberagent` 是零依赖核心。extras：`stocks`（yfinance）·
 `gemini` / `openai` / `claude`（provider）· `web`（本地网页）· `all`（全部）。
+DeepSeek 是 OpenAI 兼容接口，复用 `openai` 这个 extra（`pip install 'cyberagent[openai]'`，
+然后设 `DEEPSEEK_API_KEY`、用 `--llm deepseek`）——没有单独的 `deepseek` extra。
 
 **CLI。**
 
