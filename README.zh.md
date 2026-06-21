@@ -125,6 +125,10 @@ cyberagent serve                               # 或：打开本地网页
 
 输入 `NVDA` / `600519` / `0700`，等报告。就这些。
 
+想换别的 LLM？改 extra 和 key 即可——OpenAI / DeepSeek 都用 `openai` 这个 extra：
+`pip install 'cyberagent[stocks,openai,web]'`，设 `OPENAI_API_KEY` 或 `DEEPSEEK_API_KEY`，
+再 `cyberagent --llm openai` / `--llm deepseek`。详见下方 provider 说明。
+
 ## 在 Python 里使用
 
 ```python

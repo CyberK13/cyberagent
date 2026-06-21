@@ -143,6 +143,11 @@ cyberagent                                     # interactive · or `cyberagent s
 
 Type `NVDA` / `600519` / `0700` and read the report. That's it.
 
+Prefer another LLM? Swap the extra and key — e.g. OpenAI / DeepSeek use the
+`openai` extra: `pip install 'cyberagent[stocks,openai,web]'`, set `OPENAI_API_KEY`
+or `DEEPSEEK_API_KEY`, then `cyberagent --llm openai` / `--llm deepseek`. See the
+providers section below for the full list.
+
 ## Use it from Python
 
 ```python
