@@ -118,29 +118,20 @@ cyberagent 把这套纪律提炼成一条固定、可证伪、任何 LLM 都能�
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate   # 隔离环境（Windows：.venv\Scripts\activate）
-python3 -m pip install 'cyberagent[stocks,web,LLM]'  # 把 LLM 换成一个 provider —— 见下表
+python3 -m pip install 'cyberagent[all]'             # 全套：行情数据 + 全部 LLM provider + 本地网页
+cyberagent                                           # 启动交互式向导
 ```
 
-选一个 LLM provider——装它的 extra、填它的 key、用 `--llm` 指向它：
-
-| Provider | extra | `.env` key | 运行 |
-|---|---|---|---|
-| **Gemini** —— 默认 · 实时联网 grounding · [免费 key](https://aistudio.google.com/app/apikey) | `gemini` | `GOOGLE_API_KEY` | `cyberagent` |
-| **DeepSeek** | `deepseek` | `DEEPSEEK_API_KEY` | `cyberagent --llm deepseek` |
-| **OpenAI** | `openai` | `OPENAI_API_KEY` | `cyberagent --llm openai` |
-| **Claude** | `claude` | `ANTHROPIC_API_KEY` | `cyberagent --llm claude` |
-
-```bash
-# 示例 —— Gemini（换成上表任一行的 extra / key / --llm 即可）：
-python3 -m pip install 'cyberagent[stocks,web,gemini]'
-echo 'GOOGLE_API_KEY=你的key' > .env
-cyberagent                                           # 交互式分析（或 cyberagent serve 打开本地网页）
-```
-
-输入 `NVDA` / `600519` / `0700`，等报告。就这些。
+安装时不用选模型。`cyberagent` 会一步步带你走 —— **① 语言 → ② 模型 → ③ 粘贴 API key
+→ ④ 输入代码**（`NVDA` / `600519` / `0700`）—— 然后打印报告。就这些。（想用浏览器？
+`cyberagent serve` 打开本地网页。）
 
 > 用 `python3 -m pip`（不要用裸 `pip`）配合上面的 venv —— macOS 上常常没有 `pip`
 > 命令（`command not found`），新版 Python 也会拒绝装进系统环境。venv 一次性绕开这两个坑。
+
+想装得更精简？不必装全部 provider —— 只装一个的 extra（`gemini` / `deepseek` /
+`openai` / `claude`）即可，例如 `python3 -m pip install 'cyberagent[stocks,web,deepseek]'`。
+向导会提供该 provider；非交互用法用 `--llm <provider>`（见下方）。
 
 ## 在 Python 里使用
 

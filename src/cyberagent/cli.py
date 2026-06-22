@@ -1,6 +1,6 @@
 """cyberagent CLI — a terminal-style entry to the physical-bottleneck analyst chain.
 
-Interactive (pick language + model, then enter a symbol):
+Interactive wizard (step by step: language → model → API key → symbol):
 
     cyberagent
 
@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import getpass
 import os
 import sys
 
@@ -60,16 +61,64 @@ def _has_key(env_key: str) -> bool:
     return bool(os.getenv(env_key))
 
 
-def _choose_model(default: str = "gemini") -> str:
-    """Print the model menu (with ✓/✗ for matched API keys) and return a provider."""
-    print("选择模型 / Select model  (✓ = API key found in env, auto-matched):\n")
-    for i, p in enumerate(PROVIDER_CATALOG, 1):
-        mark = "✓" if _has_key(p["env_key"]) else "✗ missing"
-        star = "  (default)" if p["provider"] == default else ""
-        print(f"  {i}) {p['label']:<42} [{p['env_key']}: {mark}]{star}")
-    print("  m) mock  (offline, no key — for trying the flow)\n")
+# Localized wizard strings (zh/en). Step 1 (language) is bilingual since the
+# language isn't chosen yet; every later step speaks the chosen language.
+_TEXTS = {
+    "en": {
+        "step_model":  "\nStep 2/4 — Select a model  (✓ = API key already in env):\n",
+        "mock_line":   "  m) mock  (offline, no key — just to try the flow)\n",
+        "choose":      "> Choose [1-{n} / m, Enter = default {default}]: ",
+        "step_key":    "\nStep 3/4 — API key",
+        "key_found":   "  ✓ {env_key} found in environment — using it.",
+        "key_needed":  "  {label} needs {env_key}. Get a key from the provider, then paste it below.",
+        "key_prompt":  "> Paste {env_key} (input hidden): ",
+        "key_empty":   "No key entered. Pick another model or set the key in .env.",
+        "key_save":    "> Save it to .env so you won't re-enter next time? [Y/n]: ",
+        "key_saved":   "  ✓ saved to .env",
+        "step_symbol": "\nStep 4/4 — Enter symbol (NVDA / 600519 / 0700): ",
+        "no_symbol":   "No symbol entered.",
+    },
+    "zh": {
+        "step_model":  "\n第 2/4 步 —— 选择模型（✓ = 环境里已有该 key）：\n",
+        "mock_line":   "  m) mock（离线、无需 key，只为体验流程）\n",
+        "choose":      "> 选择 [1-{n} / m，回车默认 {default}]: ",
+        "step_key":    "\n第 3/4 步 —— API key",
+        "key_found":   "  ✓ 环境里已找到 {env_key}，直接使用。",
+        "key_needed":  "  {label} 需要 {env_key}。先去对应平台申请 key，然后粘贴到下面。",
+        "key_prompt":  "> 粘贴 {env_key}（输入不回显）: ",
+        "key_empty":   "没有输入 key。请换个模型，或在 .env 里填好。",
+        "key_save":    "> 保存到 .env，下次免输？[Y/n]: ",
+        "key_saved":   "  ✓ 已保存到 .env",
+        "step_symbol": "\n第 4/4 步 —— 输入代码 (NVDA / 600519 / 0700): ",
+        "no_symbol":   "没有输入代码。",
+    },
+}
+
+
+def _t(lang: str, key: str, **kw) -> str:
+    s = _TEXTS.get(lang, _TEXTS["en"]).get(key) or _TEXTS["en"][key]
+    return s.format(**kw) if kw else s
+
+
+def _choose_lang(default: str = "en") -> str:
+    print("Step 1/4 — Language / 第 1/4 步 —— 语言")
     try:
-        raw = input(f"> 选择 [1-{len(PROVIDER_CATALOG)} / m, 回车默认 {default}]: ").strip().lower()
+        raw = input(f"> [zh / en, Enter = {default}]: ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        return default
+    return raw if raw in ("zh", "en") else default
+
+
+def _choose_model(lang: str, default: str = "gemini") -> str:
+    """Print the model menu (with ✓/✗ for matched API keys) and return a provider."""
+    print(_t(lang, "step_model"))
+    for i, p in enumerate(PROVIDER_CATALOG, 1):
+        mark = "✓" if _has_key(p["env_key"]) else "—"
+        star = "  (default)" if p["provider"] == default else ""
+        print(f"  {i}) {p['label']:<42} [{mark}]{star}")
+    print(_t(lang, "mock_line"))
+    try:
+        raw = input(_t(lang, "choose", n=len(PROVIDER_CATALOG), default=default)).strip().lower()
     except (EOFError, KeyboardInterrupt):
         return default
     if not raw:
@@ -82,12 +131,55 @@ def _choose_model(default: str = "gemini") -> str:
     return raw
 
 
-def _choose_lang(default: str = "en") -> str:
+def _save_key_to_dotenv(env_key: str, value: str, path: str = ".env") -> None:
+    """Append or update a single KEY=value line in ./.env (creating it if needed)."""
+    lines: list[str] = []
+    found = False
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+        for i, ln in enumerate(lines):
+            if ln.strip().startswith(env_key + "="):
+                lines[i] = f"{env_key}={value}"
+                found = True
+                break
+    if not found:
+        lines.append(f"{env_key}={value}")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
+def _ensure_key(provider: str, lang: str) -> bool:
+    """Step 3: make sure the chosen provider has an API key, prompting for it if
+    missing (and offering to save it to .env). Returns False to abort."""
+    cat = next((p for p in PROVIDER_CATALOG if p["provider"] == provider), None)
+    if cat is None:
+        return True  # custom/typed provider name — let the adapter handle it
+    env_key = cat["env_key"]
+    print(_t(lang, "step_key"))
+    if _has_key(env_key):
+        print(_t(lang, "key_found", env_key=env_key))
+        return True
+    print(_t(lang, "key_needed", label=cat["label"], env_key=env_key))
     try:
-        raw = input(f"> 语言 / Language [zh/en, 回车默认 {default}]: ").strip().lower()
+        entered = getpass.getpass(_t(lang, "key_prompt", env_key=env_key)).strip()
     except (EOFError, KeyboardInterrupt):
-        return default
-    return raw if raw in ("zh", "en") else default
+        return False
+    if not entered:
+        print(_t(lang, "key_empty"), file=sys.stderr)
+        return False
+    os.environ[env_key] = entered  # adapters read this as a fallback
+    try:
+        save = input(_t(lang, "key_save")).strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        save = ""
+    if save in ("", "y", "yes"):
+        try:
+            _save_key_to_dotenv(env_key, entered)
+            print(_t(lang, "key_saved"))
+        except Exception:
+            pass
+    return True
 
 
 def _progress(stage: str, label: str, status: str) -> None:
@@ -156,20 +248,19 @@ def main(argv=None) -> int:
         return asyncio.run(_run(args.symbol, llm=args.llm, lang=args.lang,
                                 departments=depts, grounding=not args.no_grounding))
 
-    # interactive "homepage"
+    # interactive wizard: language → model → API key → symbol
     print(BANNER)
-    lang = _choose_lang()
-    provider = _choose_model()
-    if provider != "mock" and provider in {p["provider"] for p in PROVIDER_CATALOG}:
-        env_key = next(p["env_key"] for p in PROVIDER_CATALOG if p["provider"] == provider)
-        if not _has_key(env_key):
-            print(f"\n⚠️  没找到 {env_key}。请在 .env 填入，或选其它模型 / mock。", file=sys.stderr)
+    lang = _choose_lang()                 # Step 1
+    provider = _choose_model(lang)        # Step 2
+    if provider != "mock":                # Step 3
+        if not _ensure_key(provider, lang):
+            return 1
     try:
-        symbol = input("\n> 输入代码 / Enter symbol (NVDA / 600519 / 0700): ").strip()
+        symbol = input(_t(lang, "step_symbol")).strip()   # Step 4
     except (EOFError, KeyboardInterrupt):
         return 0
     if not symbol:
-        print("没有输入代码。", file=sys.stderr)
+        print(_t(lang, "no_symbol"), file=sys.stderr)
         return 1
     return asyncio.run(_run(symbol, llm=provider, lang=lang, departments=None, grounding=True))
 

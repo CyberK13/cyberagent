@@ -137,30 +137,23 @@ This is the part textbook frameworks skip:
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate   # isolated env (Win: .venv\Scripts\activate)
-python3 -m pip install 'cyberagent[stocks,web,LLM]'  # replace LLM with one provider — see table
+python3 -m pip install 'cyberagent[all]'             # everything: market data + all LLM providers + web UI
+cyberagent                                            # launches the interactive wizard
 ```
 
-Pick one LLM provider — install its extra, set its key, point `--llm` at it:
-
-| Provider | extra | `.env` key | run |
-|---|---|---|---|
-| **Gemini** — default · real-time grounding · [free key](https://aistudio.google.com/app/apikey) | `gemini` | `GOOGLE_API_KEY` | `cyberagent` |
-| **DeepSeek** | `deepseek` | `DEEPSEEK_API_KEY` | `cyberagent --llm deepseek` |
-| **OpenAI** | `openai` | `OPENAI_API_KEY` | `cyberagent --llm openai` |
-| **Claude** | `claude` | `ANTHROPIC_API_KEY` | `cyberagent --llm claude` |
-
-```bash
-# example — Gemini (swap the extra, key, and --llm for any row above):
-python3 -m pip install 'cyberagent[stocks,web,gemini]'
-echo 'GOOGLE_API_KEY=your_key_here' > .env
-cyberagent                                            # interactive · or `cyberagent serve` for the local web UI
-```
-
-Type `NVDA` / `600519` / `0700` and read the report. That's it.
+No need to pick a provider at install time. `cyberagent` then walks you through it
+step by step — **① language → ② model → ③ paste your API key → ④ enter a symbol**
+(`NVDA` / `600519` / `0700`) — and prints the report. That's it. (Prefer the
+browser? `cyberagent serve` for the local web UI.)
 
 > Use `python3 -m pip` (not bare `pip`) and the venv above — on macOS a plain
 > `pip` is often missing (`command not found`) and recent Python blocks installs
 > into the system environment. The venv sidesteps both.
+
+Want a leaner install? You don't need every provider — install just one with its
+extra (`gemini` / `deepseek` / `openai` / `claude`), e.g.
+`python3 -m pip install 'cyberagent[stocks,web,deepseek]'`. The wizard then offers
+that provider; for non-interactive use pass `--llm <provider>` (see below).
 
 ## Use it from Python
 
