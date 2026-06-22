@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cyberagent"
-version = "0.1.1"
+version = "0.1.2"
 description = "Physical-bottleneck, reverse-consensus investment analysis for every market — an LLM agent chain that traces any stock (A-share / HK / US) to its supply-chain constraint and refuses to chase narrative-driven tops. Bring your own LLM key."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -37,6 +37,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Office/Business :: Financial :: Investment",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
@@ -49,6 +50,7 @@ dependencies = [
 stocks   = ["yfinance>=0.2"]
 web      = ["flask>=3.0"]
 openai   = ["openai>=1.0"]
+deepseek = ["openai>=1.0"]   # DeepSeek is OpenAI-API compatible — alias for the openai client
 gemini   = ["google-genai>=0.2"]
 claude   = ["anthropic>=0.8"]
 test     = ["pytest>=7.0"]

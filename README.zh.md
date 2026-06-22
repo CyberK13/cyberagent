@@ -117,17 +117,21 @@ cyberagent 把这套纪律提炼成一条固定、可证伪、任何 LLM 都能�
 ## 快速开始 —— 30 秒
 
 ```bash
-pip install 'cyberagent[stocks,gemini,web]'
-echo 'GOOGLE_API_KEY=你的key' > .env          # 免费申请：aistudio.google.com/app/apikey
-cyberagent                                     # 交互式分析
-cyberagent serve                               # 或：打开本地网页
+python3 -m venv .venv && source .venv/bin/activate   # 隔离环境（Windows：.venv\Scripts\activate）
+python3 -m pip install 'cyberagent[stocks,gemini,web]'
+echo 'GOOGLE_API_KEY=你的key' > .env                 # 免费申请：aistudio.google.com/app/apikey
+cyberagent                                           # 交互式分析（或 cyberagent serve 打开本地网页）
 ```
 
 输入 `NVDA` / `600519` / `0700`，等报告。就这些。
 
-想换别的 LLM？改 extra 和 key 即可——OpenAI / DeepSeek 都用 `openai` 这个 extra：
-`pip install 'cyberagent[stocks,openai,web]'`，设 `OPENAI_API_KEY` 或 `DEEPSEEK_API_KEY`，
-再 `cyberagent --llm openai` / `--llm deepseek`。详见下方 provider 说明。
+> 用 `python3 -m pip`（不要用裸 `pip`）配合上面的 venv —— macOS 上常常没有 `pip`
+> 命令（`command not found`），新版 Python 也会拒绝装进系统环境。venv 一次性绕开这两个坑。
+
+想换别的 LLM？改 extra 和 key 即可——比如 DeepSeek：
+`python3 -m pip install 'cyberagent[stocks,deepseek,web]'`，设 `DEEPSEEK_API_KEY`，
+再 `cyberagent --llm deepseek`。（OpenAI → `openai` extra + `OPENAI_API_KEY`；
+Claude → `claude` extra + `ANTHROPIC_API_KEY`。）详见下方 provider 说明。
 
 ## 在 Python 里使用
 
@@ -172,9 +176,9 @@ key 可以传参、走环境变量、或放本地 `.env`（全部变量见 [`.en
 [DeepSeek](https://platform.deepseek.com/)。
 
 **安装选项。** 裸 `pip install cyberagent` 是零依赖核心。extras：`stocks`（yfinance）·
-`gemini` / `openai` / `claude`（provider）· `web`（本地网页）· `all`（全部）。
-DeepSeek 是 OpenAI 兼容接口，复用 `openai` 这个 extra（`pip install 'cyberagent[openai]'`，
-然后设 `DEEPSEEK_API_KEY`、用 `--llm deepseek`）——没有单独的 `deepseek` extra。
+`gemini` / `openai` / `claude` / `deepseek`（provider）· `web`（本地网页）· `all`（全部）。
+DeepSeek 是 OpenAI 兼容接口，`deepseek` extra 即 `openai` 的别名——
+`python3 -m pip install 'cyberagent[deepseek]'`，设 `DEEPSEEK_API_KEY`，用 `--llm deepseek`。
 
 **CLI。**
 

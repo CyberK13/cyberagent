@@ -136,17 +136,22 @@ This is the part textbook frameworks skip:
 ## Quickstart — 30 seconds
 
 ```bash
-pip install 'cyberagent[stocks,gemini,web]'
-echo 'GOOGLE_API_KEY=your_key_here' > .env    # free key: aistudio.google.com/app/apikey
-cyberagent                                     # interactive · or `cyberagent serve` for the local web UI
+python3 -m venv .venv && source .venv/bin/activate   # isolated env (Win: .venv\Scripts\activate)
+python3 -m pip install 'cyberagent[stocks,gemini,web]'
+echo 'GOOGLE_API_KEY=your_key_here' > .env           # free key: aistudio.google.com/app/apikey
+cyberagent                                            # interactive · or `cyberagent serve` for the local web UI
 ```
 
 Type `NVDA` / `600519` / `0700` and read the report. That's it.
 
-Prefer another LLM? Swap the extra and key — e.g. OpenAI / DeepSeek use the
-`openai` extra: `pip install 'cyberagent[stocks,openai,web]'`, set `OPENAI_API_KEY`
-or `DEEPSEEK_API_KEY`, then `cyberagent --llm openai` / `--llm deepseek`. See the
-providers section below for the full list.
+> Use `python3 -m pip` (not bare `pip`) and the venv above — on macOS a plain
+> `pip` is often missing (`command not found`) and recent Python blocks installs
+> into the system environment. The venv sidesteps both.
+
+Prefer another LLM? Swap the extra and key — e.g. for DeepSeek:
+`python3 -m pip install 'cyberagent[stocks,deepseek,web]'`, set `DEEPSEEK_API_KEY`,
+then `cyberagent --llm deepseek`. (OpenAI → `openai` extra + `OPENAI_API_KEY`;
+Claude → `claude` extra + `ANTHROPIC_API_KEY`.) See the providers section below.
 
 ## Use it from Python
 
@@ -194,11 +199,11 @@ Keys come from the argument, the environment, or a local `.env`
 [DeepSeek](https://platform.deepseek.com/).
 
 **Install options.** Bare `pip install cyberagent` is the zero-dependency core.
-Extras: `stocks` (yfinance) · `gemini` / `openai` / `claude` (providers) ·
-`web` (local UI) · `all` (everything). DeepSeek is OpenAI-API compatible, so it
-reuses the `openai` extra (`pip install 'cyberagent[openai]'`, then set
-`DEEPSEEK_API_KEY` and run `--llm deepseek`) — there is no separate `deepseek`
-extra.
+Extras: `stocks` (yfinance) · `gemini` / `openai` / `claude` / `deepseek`
+(providers) · `web` (local UI) · `all` (everything). DeepSeek is OpenAI-API
+compatible, so the `deepseek` extra is an alias for `openai` — install with
+`python3 -m pip install 'cyberagent[deepseek]'`, set `DEEPSEEK_API_KEY`, run
+`--llm deepseek`.
 
 **CLI.**
 
