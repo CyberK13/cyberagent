@@ -118,8 +118,22 @@ cyberagent 把这套纪律提炼成一条固定、可证伪、任何 LLM 都能�
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate   # 隔离环境（Windows：.venv\Scripts\activate）
-python3 -m pip install 'cyberagent[stocks,gemini,web]'
-echo 'GOOGLE_API_KEY=你的key' > .env                 # 免费申请：aistudio.google.com/app/apikey
+python3 -m pip install 'cyberagent[stocks,web,LLM]'  # 把 LLM 换成一个 provider —— 见下表
+```
+
+选一个 LLM provider——装它的 extra、填它的 key、用 `--llm` 指向它：
+
+| Provider | extra | `.env` key | 运行 |
+|---|---|---|---|
+| **Gemini** —— 默认 · 实时联网 grounding · [免费 key](https://aistudio.google.com/app/apikey) | `gemini` | `GOOGLE_API_KEY` | `cyberagent` |
+| **DeepSeek** | `deepseek` | `DEEPSEEK_API_KEY` | `cyberagent --llm deepseek` |
+| **OpenAI** | `openai` | `OPENAI_API_KEY` | `cyberagent --llm openai` |
+| **Claude** | `claude` | `ANTHROPIC_API_KEY` | `cyberagent --llm claude` |
+
+```bash
+# 示例 —— Gemini（换成上表任一行的 extra / key / --llm 即可）：
+python3 -m pip install 'cyberagent[stocks,web,gemini]'
+echo 'GOOGLE_API_KEY=你的key' > .env
 cyberagent                                           # 交互式分析（或 cyberagent serve 打开本地网页）
 ```
 
@@ -127,11 +141,6 @@ cyberagent                                           # 交互式分析（或 cyb
 
 > 用 `python3 -m pip`（不要用裸 `pip`）配合上面的 venv —— macOS 上常常没有 `pip`
 > 命令（`command not found`），新版 Python 也会拒绝装进系统环境。venv 一次性绕开这两个坑。
-
-想换别的 LLM？改 extra 和 key 即可——比如 DeepSeek：
-`python3 -m pip install 'cyberagent[stocks,deepseek,web]'`，设 `DEEPSEEK_API_KEY`，
-再 `cyberagent --llm deepseek`。（OpenAI → `openai` extra + `OPENAI_API_KEY`；
-Claude → `claude` extra + `ANTHROPIC_API_KEY`。）详见下方 provider 说明。
 
 ## 在 Python 里使用
 

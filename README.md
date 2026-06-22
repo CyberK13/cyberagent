@@ -137,8 +137,22 @@ This is the part textbook frameworks skip:
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate   # isolated env (Win: .venv\Scripts\activate)
-python3 -m pip install 'cyberagent[stocks,gemini,web]'
-echo 'GOOGLE_API_KEY=your_key_here' > .env           # free key: aistudio.google.com/app/apikey
+python3 -m pip install 'cyberagent[stocks,web,LLM]'  # replace LLM with one provider — see table
+```
+
+Pick one LLM provider — install its extra, set its key, point `--llm` at it:
+
+| Provider | extra | `.env` key | run |
+|---|---|---|---|
+| **Gemini** — default · real-time grounding · [free key](https://aistudio.google.com/app/apikey) | `gemini` | `GOOGLE_API_KEY` | `cyberagent` |
+| **DeepSeek** | `deepseek` | `DEEPSEEK_API_KEY` | `cyberagent --llm deepseek` |
+| **OpenAI** | `openai` | `OPENAI_API_KEY` | `cyberagent --llm openai` |
+| **Claude** | `claude` | `ANTHROPIC_API_KEY` | `cyberagent --llm claude` |
+
+```bash
+# example — Gemini (swap the extra, key, and --llm for any row above):
+python3 -m pip install 'cyberagent[stocks,web,gemini]'
+echo 'GOOGLE_API_KEY=your_key_here' > .env
 cyberagent                                            # interactive · or `cyberagent serve` for the local web UI
 ```
 
@@ -147,11 +161,6 @@ Type `NVDA` / `600519` / `0700` and read the report. That's it.
 > Use `python3 -m pip` (not bare `pip`) and the venv above — on macOS a plain
 > `pip` is often missing (`command not found`) and recent Python blocks installs
 > into the system environment. The venv sidesteps both.
-
-Prefer another LLM? Swap the extra and key — e.g. for DeepSeek:
-`python3 -m pip install 'cyberagent[stocks,deepseek,web]'`, set `DEEPSEEK_API_KEY`,
-then `cyberagent --llm deepseek`. (OpenAI → `openai` extra + `OPENAI_API_KEY`;
-Claude → `claude` extra + `ANTHROPIC_API_KEY`.) See the providers section below.
 
 ## Use it from Python
 
