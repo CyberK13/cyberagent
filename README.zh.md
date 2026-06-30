@@ -21,22 +21,6 @@
 
 ---
 
-> 🚧 **早期版本。** 分析引擎已能端到端跑通；公开 API 在 `1.0` 前仍可能演进。
-
----
-
-## 演示
-
-<div align="center">
-
-[![cyberagent —— 物理瓶颈分析链，终端实跑](https://raw.githubusercontent.com/CyberK13/cyberagent/main/docs/assets/demo-poster.png)](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)
-
-**▶ [观看演示视频](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)** —— 从输入代码到给出裁决的完整一次运行（约 4 分钟）
-
-</div>
-
----
-
 ## 它和别的有什么不一样
 
 市面多数开源「AI 分析师」框架问的是*「这家公司好不好」*，产出一份教科书式 SWOT。
