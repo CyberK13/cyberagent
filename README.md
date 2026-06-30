@@ -31,11 +31,11 @@ Bring your own LLM key.
 
 <div align="center">
 
-<video src="https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov" controls width="100%"></video>
+[![cyberagent — physical-bottleneck analyst chain, live in the terminal](https://raw.githubusercontent.com/CyberK13/cyberagent/main/docs/assets/demo-poster.png)](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)
+
+**▶ [Watch the demo](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)** — full run, symbol to verdict (~4 min)
 
 </div>
-
-> If the player doesn't load, [**watch the demo here**](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov).
 
 ---
 

@@ -29,11 +29,11 @@
 
 <div align="center">
 
-<video src="https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov" controls width="100%"></video>
+[![cyberagent —— 物理瓶颈分析链，终端实跑](https://raw.githubusercontent.com/CyberK13/cyberagent/main/docs/assets/demo-poster.png)](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)
+
+**▶ [观看演示视频](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)** —— 从输入代码到给出裁决的完整一次运行（约 4 分钟）
 
 </div>
-
-> 如果播放器无法加载，[**点此查看演示视频**](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)。
 
 ---
 
