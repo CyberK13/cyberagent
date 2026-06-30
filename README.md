@@ -27,15 +27,6 @@ Bring your own LLM key.
 
 ---
 
-## Demo
-
-<div align="center">
-
-[![cyberagent — physical-bottleneck analyst chain, live in the terminal](https://raw.githubusercontent.com/CyberK13/cyberagent/main/docs/assets/demo-poster.png)](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)
-
-**▶ [Watch the demo](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)** — full run, symbol to verdict (~4 min)
-
-</div>
 
 ---
 
