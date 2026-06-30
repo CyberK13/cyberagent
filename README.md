@@ -31,9 +31,11 @@ Bring your own LLM key.
 
 <div align="center">
 
-https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov
+<video src="https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov" controls width="100%"></video>
 
 </div>
+
+> If the player doesn't load, [**watch the demo here**](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov).
 
 ---
 

@@ -29,9 +29,11 @@
 
 <div align="center">
 
-https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov
+<video src="https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov" controls width="100%"></video>
 
 </div>
+
+> 如果播放器无法加载，[**点此查看演示视频**](https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov)。
 
 ---
 
