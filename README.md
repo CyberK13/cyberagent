@@ -12,6 +12,7 @@ Bring your own LLM key.
 [![PyPI](https://img.shields.io/pypi/v/cyberagent.svg)](https://pypi.org/project/cyberagent/)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![X](https://img.shields.io/badge/X-@CyberK013-black.svg)](https://x.com/CyberK013)
 
 ### 🌐 Language / 语言
 
@@ -23,6 +24,16 @@ Bring your own LLM key.
 
 > 🚧 **Early release.** The analysis engine works end-to-end today; the
 > public API may still evolve before `1.0`.
+
+---
+
+## Demo
+
+<div align="center">
+
+https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov
+
+</div>
 
 ---
 
@@ -270,4 +281,6 @@ for any decision made based on this software. See [`docs/disclaimer.md`](docs/di
 
 MIT. See [LICENSE](LICENSE).
 
-<sub>Publication to the [tea Protocol](https://tea.xyz/) is planned.</sub>
+## Contact
+
+Questions, ideas, or feedback? Reach out on X: [**@CyberK013**](https://x.com/CyberK013).

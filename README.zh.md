@@ -11,6 +11,7 @@
 [![PyPI](https://img.shields.io/pypi/v/cyberagent.svg)](https://pypi.org/project/cyberagent/)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![X](https://img.shields.io/badge/X-@CyberK013-black.svg)](https://x.com/CyberK013)
 
 ### 🌐 Language / 语言
 
@@ -21,6 +22,16 @@
 ---
 
 > 🚧 **早期版本。** 分析引擎已能端到端跑通；公开 API 在 `1.0` 前仍可能演进。
+
+---
+
+## 演示
+
+<div align="center">
+
+https://github.com/CyberK13/cyberagent/releases/download/v0.1.3/DemoVideo.mov
+
+</div>
 
 ---
 
@@ -239,4 +250,6 @@ LLM 会犯错，市场不可预测，请自行研究。作者与贡献者不对�
 
 MIT，见 [LICENSE](LICENSE)。
 
-<sub>计划发布到 [tea 协议](https://tea.xyz/)。</sub>
+## 联系
+
+有任何问题、想法或反馈，欢迎在 X 上联系：[**@CyberK013**](https://x.com/CyberK013)。
