@@ -22,13 +22,6 @@ Bring your own LLM key.
 
 ---
 
-> 🚧 **Early release.** The analysis engine works end-to-end today; the
-> public API may still evolve before `1.0`.
-
----
-
-
----
 
 ## What makes it different
 
