@@ -72,7 +72,7 @@ class AnalystChain:
         model: Optional[str] = None,
         lang: str = "en",
         departments: Optional[Sequence[str]] = None,
-        timeout: float = 10.0,
+        timeout: float = 20.0,
     ):
         self.llm = resolve_llm(llm, api_key=api_key, model=model)
         self.lang = lang

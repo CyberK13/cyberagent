@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   runtime and injects them into every department's context — so non-grounded
   models (DeepSeek / OpenAI / Claude) analyze today's catalysts instead of
   falling back on stale training memory.
+- A-share live news via akshare (Eastmoney; free, no key or signup): yfinance
+  has no CN-market news, so A-share symbols now automatically fall back to
+  akshare for recent headlines. Bundled into the `stocks` / `all` extras.
 - Capability-aware prompts: adapters expose `supports_search`; models without
   live search get an explicit no-search notice — current facts may only come
   from the injected live blocks, and memory-based claims must be tagged as

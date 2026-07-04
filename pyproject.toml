@@ -47,7 +47,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-stocks   = ["yfinance>=0.2"]
+stocks   = ["yfinance>=0.2", "akshare>=1.14"]   # akshare: A-share news/fundamentals (free, no key)
 web      = ["flask>=3.0"]
 openai   = ["openai>=1.0"]
 deepseek = ["openai>=1.0"]   # DeepSeek is OpenAI-API compatible — alias for the openai client
@@ -55,7 +55,7 @@ gemini   = ["google-genai>=0.2"]
 claude   = ["anthropic>=0.8"]
 test     = ["pytest>=7.0"]
 dev      = ["pytest>=7.0", "ruff>=0.6"]
-all      = ["yfinance>=0.2", "flask>=3.0", "openai>=1.0", "google-genai>=0.2", "anthropic>=0.8"]
+all      = ["yfinance>=0.2", "akshare>=1.14", "flask>=3.0", "openai>=1.0", "google-genai>=0.2", "anthropic>=0.8"]
 
 [project.urls]
 Homepage      = "https://github.com/CyberK13/cyberagent"

@@ -11,6 +11,27 @@ from typing import Tuple
 from ..models import AssetInfo
 
 
+def _cn_news(code6: str) -> list:
+    """A-share news via akshare (Eastmoney, free, no key/signup) — yfinance has
+    no news coverage for the CN market. Returns yfinance-shaped items so the
+    downstream formatting is shared."""
+    try:
+        import akshare as ak
+        df = ak.stock_news_em(symbol=code6)
+        df = df.sort_values("发布时间", ascending=False)
+        items = []
+        for _, r in df.head(8).iterrows():
+            items.append({"content": {
+                "title": str(r.get("新闻标题") or "").strip(),
+                "pubDate": str(r.get("发布时间") or ""),
+                "provider": {"displayName": str(r.get("文章来源") or "").strip()},
+                "summary": str(r.get("新闻内容") or "").strip(),
+            }})
+        return items
+    except Exception:
+        return []
+
+
 def _yf_symbol(asset_info: AssetInfo) -> str:
     code = asset_info.code
     if asset_info.type == "stock_cn":
@@ -30,6 +51,10 @@ async def fetch(asset_info: AssetInfo, *, timeout: float = 10.0) -> Tuple[str, d
         import yfinance as yf
     except ImportError:
         return "", meta
+    # yfinance logs a raw "HTTP Error 404" for endpoints Yahoo lacks on some
+    # markets (e.g. A-share rating history) — expected, keep it off the console
+    import logging
+    logging.getLogger("yfinance").setLevel(logging.CRITICAL)
 
     sym = _yf_symbol(asset_info)
 
@@ -45,6 +70,8 @@ async def fetch(asset_info: AssetInfo, *, timeout: float = 10.0) -> Tuple[str, d
                 news = t.news or []
             except Exception:
                 news = []
+            if not news and asset_info.type == "stock_cn":
+                news = _cn_news(code.split(".")[0])
             try:
                 ratings = t.upgrades_downgrades
             except Exception:
