@@ -33,7 +33,7 @@ async def run_positioning(
     """Phase 0 — core business + physical-world positioning (a short statement)."""
     try:
         return await llm.complete(
-            positioning_system_prompt(lang),
+            positioning_system_prompt(lang, search=getattr(llm, "supports_search", False)),
             build_positioning_prompt(
                 company_name=company_name, code=code, market=market,
                 data_md=data_md, lang=lang,
@@ -57,7 +57,7 @@ async def run_department(
     """Run one department and return its DeptReport."""
     spec = get_department(key)
     display = spec["display_zh"] if lang == "zh" else spec["display_en"]
-    system = system_prompt(key, lang)
+    system = system_prompt(key, lang, search=getattr(llm, "supports_search", False))
     user = build_user_prompt(
         key, company_name=company_name, code=code, market=market,
         data_md=data_md, prior_reports=prior_reports, lang=lang,

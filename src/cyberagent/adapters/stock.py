@@ -41,12 +41,20 @@ async def fetch(asset_info: AssetInfo, *, timeout: float = 10.0) -> Tuple[str, d
                 hist = t.history(period="6mo", interval="1d")
             except Exception:
                 hist = None
-            return info, hist
+            try:
+                news = t.news or []
+            except Exception:
+                news = []
+            try:
+                ratings = t.upgrades_downgrades
+            except Exception:
+                ratings = None
+            return info, hist, news, ratings
         except Exception:
-            return {}, None
+            return {}, None, [], None
 
     try:
-        info, hist = await asyncio.wait_for(asyncio.to_thread(_pull), timeout=timeout)
+        info, hist, news, ratings = await asyncio.wait_for(asyncio.to_thread(_pull), timeout=timeout)
     except Exception:
         return "", meta
     if not info:
@@ -98,6 +106,53 @@ async def fetch(asset_info: AssetInfo, *, timeout: float = 10.0) -> Tuple[str, d
                          "and treat a headline-driven spike as an AVOID/observe form, not a buy form.\n")
     meta["price_flags"] = flags
 
+    # ── live news + analyst rating actions: fetched at runtime so EVERY provider
+    #    (search-grounded or not) sees today's catalysts instead of its training
+    #    memory. Empty for markets Yahoo doesn't cover (e.g. A-shares) — omitted. ──
+    news_block = ""
+    news_lines = []
+    for item in (news or [])[:8]:
+        c = item.get("content", item) if isinstance(item, dict) else {}
+        title = c.get("title")
+        if not title:
+            continue
+        pub = c.get("pubDate") or ""
+        if not pub and isinstance(item.get("providerPublishTime"), (int, float)):
+            pub = datetime.fromtimestamp(item["providerPublishTime"], tz=timezone.utc).strftime("%Y-%m-%d")
+        prov = c.get("provider")
+        src = prov.get("displayName") if isinstance(prov, dict) else item.get("publisher", "")
+        summary = (c.get("summary") or "").strip().replace("\n", " ")
+        line = f"  - [{str(pub)[:10]}] {title} ({src})"
+        if summary:
+            line += f" — {summary[:180]}"
+        news_lines.append(line)
+    if news_lines:
+        news_block = (
+            f"\n#### Recent news (LIVE, fetched {fetched_at} — use THESE as current catalysts, not memory)\n"
+            + "\n".join(news_lines) + "\n"
+        )
+
+    ratings_block = ""
+    try:
+        if ratings is not None and len(ratings):
+            rl = []
+            for ts, row in ratings.head(8).iterrows():
+                tgt = ""
+                cur, prior = row.get("currentPriceTarget"), row.get("priorPriceTarget")
+                if cur:
+                    tgt = f", PT {prior:g}→{cur:g}" if prior else f", PT {cur:g}"
+                rl.append(
+                    f"  - [{str(ts)[:10]}] {row.get('Firm', '?')}: {row.get('priceTargetAction') or row.get('Action', '')}"
+                    f" ({row.get('FromGrade') or '—'}→{row.get('ToGrade') or '—'}{tgt})"
+                )
+            if rl:
+                ratings_block = (
+                    "\n#### Recent analyst rating actions (LIVE — current revisions, cite these dates)\n"
+                    + "\n".join(rl) + "\n"
+                )
+    except Exception:
+        pass
+
     md = (
         f"### Company: {name} ({code})\n"
         f"- **Data fetched at: {fetched_at}**  (cite this date; do not use a remembered/older price)\n"
@@ -116,6 +171,8 @@ async def fetch(asset_info: AssetInfo, *, timeout: float = 10.0) -> Tuple[str, d
         f"  (vs price {price}{' — ⚠ MEAN TARGET BELOW PRICE = overshoot signal' if (info.get('targetMeanPrice') and price and info.get('targetMeanPrice') < price) else ''})\n"
         f"- # analysts: {info.get('numberOfAnalystOpinions')} | recommendation: {info.get('recommendationKey')} (mean {info.get('recommendationMean')})\n"
         f"- Insider held %: {info.get('heldPercentInsiders')} | Institution held %: {info.get('heldPercentInstitutions')}\n"
+        f"{ratings_block}"
+        f"{news_block}"
         f"\n#### Fundamentals\n"
         f"- Total revenue: {info.get('totalRevenue')}\n"
         f"- Revenue growth: {info.get('revenueGrowth')}\n"

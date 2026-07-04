@@ -103,6 +103,23 @@ _RULES_EN = """
 2. When citing a key figure, note which data block it came from (quote / financials / on-chain).
 3. Write in English, use Markdown, lead with the conclusion."""
 
+# ── 无联网模型的覆盖声明：模型没有搜索能力时替代「实时搜索」铁律 ─────────────
+_NO_SEARCH_ZH = """
+
+【⚠ 无联网声明 —— 覆盖上文所有「实时搜索」要求】
+你**没有**联网/实时搜索能力。凡上文要求「实时搜索」之处，一律改为：
+1. 当下事实（当前价、近期涨跌及原因、最新新闻、分析师目标价与评级变动）**只准引用**下方「数据上下文」中的实时注入块（Recent news / Recent analyst rating actions / Price action，取数时间见 Data fetched），并引用其中的日期。
+2. 数据上下文没有、而你只能凭训练记忆补充的任何时间敏感事实（产能数字、新闻事件、目标价、行业格局变化），**必须**显式标注「[记忆·截至本模型知识截止（约 YYYY-MM，自报）·可能过时]」，且此类声明一律降级为 [Needs verification]，不得为最终结论承重。
+3. 严禁把记忆内容伪装成搜索结果或当前事实；严禁给记忆中的旧数据标注近期日期。"""
+
+_NO_SEARCH_EN = """
+
+[⚠ NO-LIVE-SEARCH NOTICE — OVERRIDES every 'real-time search' instruction above]
+You do NOT have web/search access. Wherever the rules above say 'search':
+1. Current facts (price, recent moves and their cause, latest news, analyst targets and rating changes) may ONLY come from the live-injected blocks in the Data Context below (Recent news / Recent analyst rating actions / Price action; see the Data-fetched timestamp), citing their dates.
+2. Any time-sensitive fact NOT in the Data Context that you can only supply from training memory (capacity figures, news events, price targets, competitive shifts) MUST be tagged '[memory · as of this model's knowledge cutoff (~YYYY-MM, self-reported) · possibly stale]', is automatically downgraded to [Needs verification], and may not be load-bearing for the final verdict.
+3. Never present memory as search results or current fact; never attach a recent date to remembered stale data."""
+
 
 def _system(role_zh: str, dims_zh: str, out_zh: str,
             role_en: str, dims_en: str, out_en: str) -> dict[str, str]:
@@ -136,8 +153,11 @@ Requirements:
 5. Never fabricate; mark missing data N/A. Keep it to 3-5 sentences, conclusion first."""
 
 
-def positioning_system_prompt(lang: str = "zh") -> str:
-    return _POSITIONING_ZH if lang == "zh" else _POSITIONING_EN
+def positioning_system_prompt(lang: str = "zh", search: bool = True) -> str:
+    base = _POSITIONING_ZH if lang == "zh" else _POSITIONING_EN
+    if not search:
+        base += _NO_SEARCH_ZH if lang == "zh" else _NO_SEARCH_EN
+    return base
 
 
 def build_positioning_prompt(*, company_name: str, code: str, market: str,
@@ -408,8 +428,11 @@ def get_department(key: str) -> dict:
     return _BY_KEY[key]
 
 
-def system_prompt(key: str, lang: str = "zh") -> str:
-    return _BY_KEY[key]["system"]["zh" if lang == "zh" else "en"]
+def system_prompt(key: str, lang: str = "zh", search: bool = True) -> str:
+    base = _BY_KEY[key]["system"]["zh" if lang == "zh" else "en"]
+    if not search:
+        base += _NO_SEARCH_ZH if lang == "zh" else _NO_SEARCH_EN
+    return base
 
 
 def build_user_prompt(

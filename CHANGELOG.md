@@ -5,6 +5,24 @@ All notable changes to `cyberagent` are recorded here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Live data injection for ALL providers: the stock adapter now fetches recent
+  news headlines and analyst rating actions (with dates and price targets) at
+  runtime and injects them into every department's context — so non-grounded
+  models (DeepSeek / OpenAI / Claude) analyze today's catalysts instead of
+  falling back on stale training memory.
+- Capability-aware prompts: adapters expose `supports_search`; models without
+  live search get an explicit no-search notice — current facts may only come
+  from the injected live blocks, and memory-based claims must be tagged as
+  possibly stale and downgraded to [Needs verification].
+
+### Fixed
+- A failed live-data fetch is no longer silent: the chain now injects a loud
+  "LIVE DATA UNAVAILABLE" notice telling the model to state its knowledge
+  cutoff and cap confidence, instead of letting it run blind on memory.
+
 ## [0.1.3] - 2026-06-22
 
 ### Added

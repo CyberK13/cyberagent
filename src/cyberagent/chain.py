@@ -111,6 +111,14 @@ class AnalystChain:
 
         data_md, meta = await adapters.fetch(asset, timeout=self.timeout)
         report.company_name = meta.get("company_name") or asset.code
+        if not data_md:
+            # Live fetch failed (offline / rate-limited / unsupported market) — say
+            # so loudly instead of letting the LLM silently run on stale memory.
+            data_md = (
+                "⚠ **LIVE DATA UNAVAILABLE** — the real-time fetch (quote/news) failed for this run. "
+                "No current price or news is provided. State your knowledge cutoff, tag every "
+                "time-sensitive claim as [Needs verification · possibly stale], and cap confidence accordingly."
+            )
 
         # Phase 0: core business + physical-world positioning (grounds the whole chain)
         _emit("positioning", "资产定位 / Positioning", "start")

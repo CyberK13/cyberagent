@@ -31,6 +31,10 @@ class LLMAdapter(abc.ABC):
     """Abstract base. Implement `complete` to plug in any model."""
 
     name: str = "custom"
+    #: True only when the adapter can verify facts via live web search (e.g.
+    #: Gemini grounding). Prompts adapt: non-search models are told to rely on
+    #: the injected live data block and to flag memory-based claims as stale.
+    supports_search: bool = False
 
     @abc.abstractmethod
     async def complete(self, system: str, user: str) -> str:
@@ -106,6 +110,7 @@ class GeminiAdapter(LLMAdapter):
         self.model = model or os.getenv("GOOGLE_MODEL") or DEFAULT_MODELS["gemini"]
         self.temperature = temperature
         self.grounding = grounding
+        self.supports_search = grounding
 
     async def complete(self, system: str, user: str) -> str:
         try:
