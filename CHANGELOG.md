@@ -5,6 +5,35 @@ All notable changes to `cyberagent` are recorded here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Machine-readable verdict line: the closing (leaders) department must now end
+  its report with `FINAL DECISION: <label> | CONFIDENCE: <0-100>/100`, and the
+  verdict parser prefers that line — verified end-to-end with DeepSeek.
+- SA-arc reality check in prompts: the Situational Awareness ladder/OOM
+  timeline is now framed as a mid-2024 working hypothesis; departments must
+  anchor "today" to the data fetch date and check whether the arc has tracked,
+  instead of treating unrealized forecasts as facts.
+- Injected fundamentals now note that growth/margin/ROE figures are decimal
+  fractions (0.25 = 25%), so models don't misread ratio units.
+
+### Changed
+- Claude default model: `claude-sonnet-4-5` → `claude-sonnet-5` (current
+  Sonnet tier). The adapter no longer sends `temperature` unless explicitly
+  set (Sonnet 5+ rejects non-default sampling params) and `max_tokens` is
+  raised 4096 → 8192 so long zh reports aren't truncated mid-verdict.
+- Price statements in prompts now require the data block's currency instead of
+  a hardcoded `$` (A-share/HK prices are not USD).
+
+### Fixed
+- Verdict parsing could report ACCUMULATE for an AVOID report when the model
+  echoed the output template's "ACCUMULATE / HOLD / REDUCE / AVOID" menu line;
+  the parser now skips enumeration lines and reads the real verdict.
+- Confidence parsing now handles the real-world heading shape
+  (`### 置信度（0-100）+ 扣分依据` with the number on the next line) and the
+  new `NN/100` machine line; previously it silently returned 0.
+
 ## [0.1.4] - 2026-07-04
 
 ### Added

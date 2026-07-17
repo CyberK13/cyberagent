@@ -25,18 +25,47 @@ from .prompts import DEPT_ORDER, get_department
 _DECISIONS = ("ACCUMULATE", "HOLD", "REDUCE", "AVOID")
 
 
+def _labels_in(line: str) -> list[str]:
+    """Decision labels present in a line, in order of appearance."""
+    hits = [(line.find(d), d) for d in _DECISIONS if d in line]
+    return [d for _, d in sorted(hits)]
+
+
+def _decision_from_line(line: str) -> Optional[str]:
+    """A line with 1-2 distinct labels is a real verdict ('AVOID (else HOLD)');
+    a line with 3+ is the output template's enumeration ('ACCUMULATE / HOLD /
+    REDUCE / AVOID') echoed back — never treat that as the verdict."""
+    found = _labels_in(line)
+    return found[0] if 0 < len(set(found)) <= 2 else None
+
+
 def _parse_verdict(markdown: str) -> tuple[Optional[FinalDecision], float, Optional[str]]:
     """Best-effort extraction of final_decision / confidence / headline from the
     closing (leaders) department's markdown."""
     decision: Optional[FinalDecision] = None
     up = markdown.upper()
-    # Prefer a decision near a "final decision" marker, else first occurrence.
-    marker = re.search(r"(FINAL DECISION|最终决策)(.{0,80})", up, re.DOTALL)
-    search_space = marker.group(2) if marker else up
-    for d in _DECISIONS:
-        if d in search_space:
-            decision = d  # type: ignore[assignment]
+    lines = up.splitlines()
+
+    # 1) A line at/right after a "final decision" marker with a single verdict
+    #    (incl. the prompt-mandated machine line "FINAL DECISION: X | ...").
+    for i, ln in enumerate(lines):
+        if "FINAL DECISION" not in ln and "最终决策" not in ln:
+            continue
+        for j in range(i, min(i + 4, len(lines))):
+            got = _decision_from_line(lines[j])
+            if got:
+                decision = got  # type: ignore[assignment]
+                break
+        if decision:
             break
+    # 2) Fallback: first non-enumeration line anywhere carrying a label.
+    if decision is None:
+        for ln in lines:
+            got = _decision_from_line(ln)
+            if got:
+                decision = got  # type: ignore[assignment]
+                break
+    # 3) Last resort: first label occurrence anywhere.
     if decision is None:
         for d in _DECISIONS:
             if d in up:
@@ -44,11 +73,15 @@ def _parse_verdict(markdown: str) -> tuple[Optional[FinalDecision], float, Optio
                 break
 
     confidence = 0.0
-    # Skip an optional "(0-100)" scale label after the keyword, then grab the real number.
-    cm = re.search(
-        r"(?:置信度|confidence)\s*(?:[（(][^）)]*[）)])?\s*[:：]?\s*\n?\s*(\d{1,3})",
-        markdown, re.IGNORECASE,
-    )
+    # Prefer the machine line "CONFIDENCE: NN/100"; else find the number on or
+    # right below a 置信度/confidence heading, skipping the "(0-100)" scale
+    # label and any trailing heading text ("+ 扣分依据…") before the digits.
+    cm = re.search(r"CONFIDENCE\s*[:：]\s*(\d{1,3})\s*/\s*100", markdown, re.IGNORECASE)
+    if not cm:
+        cm = re.search(
+            r"(?:置信度|confidence)(?:[（(][^）)]*[）)]|[^\n\d（(])*\n?\s*\**(\d{1,3})",
+            markdown, re.IGNORECASE,
+        )
     if cm:
         try:
             confidence = min(100, int(cm.group(1))) / 100.0

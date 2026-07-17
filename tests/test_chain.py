@@ -41,6 +41,40 @@ def test_unknown_symbol_is_graceful():
     assert report.error
 
 
+def test_parse_verdict_ignores_template_enumeration():
+    """A report that echoes the output template's 'ACCUMULATE / HOLD / REDUCE /
+    AVOID' menu line must not be parsed as ACCUMULATE."""
+    from cyberagent.chain import _parse_verdict
+
+    md = (
+        "### 最终决策：必须是 ACCUMULATE / HOLD / REDUCE / AVOID 之一\n"
+        "**AVOID**（由定价位置(b)驱动）\n"
+        "### 置信度（0-100）+ 扣分依据\n42（承重 Inferred -10）\n"
+        "### 一句话反共识 headline\n共识已响亮，尖顶观察不追\n"
+    )
+    decision, confidence, headline = _parse_verdict(md)
+    assert decision == "AVOID"
+    assert confidence == 0.42
+    assert headline and "共识" in headline
+
+
+def test_parse_verdict_machine_line():
+    from cyberagent.chain import _parse_verdict
+
+    md = "...analysis...\nFINAL DECISION: HOLD | CONFIDENCE: 65/100\n"
+    decision, confidence, _ = _parse_verdict(md)
+    assert decision == "HOLD"
+    assert confidence == 0.65
+
+
+def test_parse_verdict_two_label_line_takes_first():
+    from cyberagent.chain import _parse_verdict
+
+    md = "### Final decision\nAVOID (or HOLD if you already own it)\n"
+    decision, _, _ = _parse_verdict(md)
+    assert decision == "AVOID"
+
+
 def test_prompts_have_bottleneck_soul_not_mao():
     blob = "".join(system_prompt(k, "zh") + system_prompt(k, "en") for k in DEPT_ORDER)
     # bottleneck-chain soul present

@@ -200,7 +200,7 @@ async def fetch(asset_info: AssetInfo, *, timeout: float = 10.0) -> Tuple[str, d
         f"- Insider held %: {info.get('heldPercentInsiders')} | Institution held %: {info.get('heldPercentInstitutions')}\n"
         f"{ratings_block}"
         f"{news_block}"
-        f"\n#### Fundamentals\n"
+        f"\n#### Fundamentals (growth / margin / ROE / held-% figures are decimal fractions: 0.25 = 25%)\n"
         f"- Total revenue: {info.get('totalRevenue')}\n"
         f"- Revenue growth: {info.get('revenueGrowth')}\n"
         f"- Earnings growth: {info.get('earningsGrowth')}\n"

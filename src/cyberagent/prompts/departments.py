@@ -51,7 +51,8 @@ _PREAMBLE_ZH = """你是「物理瓶颈反共识研究院」分析链中的一�
 - 道德经：系统思维、物极必反、知止——判断瓶颈何时从稀缺转向过剩。
 - Munger 反向：跨学科归因，永远先证伪——「如果相反为真，需要哪些条件，这些条件现实吗？」
 
-【对齐 Situational Awareness（心经）】AI 扩张是大规模工业进程，被物理输入卡住。瓶颈阶梯：电力/变压器/燃气轮机 ＞ CoWoS 先进封装/HBM ＞ 裸逻辑产能。发展弧线：GPT-2(2019 学龄前)→GPT-4(2023 高中生)→2027 AGI→十年末超智能，有效算力 ~1 OOM/年叠加。有 situational awareness 的人在主流定价前几个 OOM 就建仓。"""
+【对齐 Situational Awareness（心经）】AI 扩张是大规模工业进程，被物理输入卡住。瓶颈阶梯：电力/变压器/燃气轮机 ＞ CoWoS 先进封装/HBM ＞ 裸逻辑产能。发展弧线：GPT-2(2019 学龄前)→GPT-4(2023 高中生)→2027 AGI→十年末超智能，有效算力 ~1 OOM/年叠加。有 situational awareness 的人在主流定价前几个 OOM 就建仓。
+- **SA 是 2024 年年中发表的工作假设，不是已发生的事实**：引用其时间表/量级时，必须以数据上下文的取数日期为「今天」，检验弧线至今兑现 / 超前 / 落后，并让偏差进入判断；不得把未兑现的预测当作当前事实承重。"""
 
 _PREAMBLE_EN = """You are one department of a 'Physical-Bottleneck Reverse-Consensus Research Institute' analysis chain. The institute does one thing: walk 'physical constraint -> financial elasticity -> consensus correction' to find bottleneck links the market has mispriced. You do not predict prices; you give facts, a logic chain, and monitorable signals. The final decision is the user's — you are not a licensed financial advisor.
 
@@ -89,7 +90,8 @@ _PREAMBLE_EN = """You are one department of a 'Physical-Bottleneck Reverse-Conse
 - Tao Te Ching: systems thinking, extremes-reverse, know-when-to-stop — when does scarcity turn to glut.
 - Munger inversion: multidisciplinary attribution, always falsify first — 'if the opposite were true, what conditions are needed, and are they realistic?'
 
-[ALIGNED WITH SITUATIONAL AWARENESS] AI scaling is a massive industrial process bottlenecked by physical inputs. Bottleneck ladder: power/transformers/gas-turbines > CoWoS advanced packaging/HBM > raw logic capacity. Development arc: GPT-2(2019 preschooler) -> GPT-4(2023 high-schooler) -> 2027 AGI -> superintelligence by end of decade; effective compute compounds ~1 OOM/year. Those with situational awareness build positions several OOMs before consensus prices them."""
+[ALIGNED WITH SITUATIONAL AWARENESS] AI scaling is a massive industrial process bottlenecked by physical inputs. Bottleneck ladder: power/transformers/gas-turbines > CoWoS advanced packaging/HBM > raw logic capacity. Development arc: GPT-2(2019 preschooler) -> GPT-4(2023 high-schooler) -> 2027 AGI -> superintelligence by end of decade; effective compute compounds ~1 OOM/year. Those with situational awareness build positions several OOMs before consensus prices them.
+- **SA is a mid-2024 working hypothesis, not accomplished fact**: when citing its timeline/magnitudes, treat the Data Context's fetch date as 'today', check whether the arc has tracked / run ahead / fallen behind so far, and let the deviation inform the judgment; never let an unrealized prediction bear weight as a present fact."""
 
 _RULES_ZH = """
 【数据完整性铁律】
@@ -232,7 +234,7 @@ DEPARTMENTS: list[dict] = [
             role_zh="你是【人类发展分析】部门。把这家公司服务的需求放到人类技术发展弧线上——尤其是 SA 的 AGI 路线图。判断它处在弧线的早期还是成熟期，还剩几个 OOM 的增长跑道。",
             dims_zh=(
                 "- **对应发展曲线**：该需求对应人类发展的哪条主曲线（AI 算力 / 能源 / 其他工业化）\n"
-                "- **OOM 弧线定位（AI 相关）**：需求在 2024(+1)/2026(+2,1GW)/2028(+3,10GW)/2030(+4,100GW) 哪个阶段附近；GPT-2→GPT-4→2027 AGI 的哪一程\n"
+                "- **OOM 弧线定位（AI 相关）**：需求在 2024(+1)/2026(+2,1GW)/2028(+3,10GW)/2030(+4,100GW) 哪个阶段附近；GPT-2→GPT-4→2027 AGI 的哪一程。以数据上下文的取数日期为「今天」定位，已过的节点须核对兑现情况，不得默认预测已成真\n"
                 "- **早期 vs 成熟**：是 pre-consensus、OOM 跑道还长，还是已接近见顶\n"
                 "- **非 AI 资产**：用更广的技术采用 / 工业化需求曲线类比\n"
                 "- 道德经物极必反：是否接近从稀缺转过剩"
@@ -247,7 +249,7 @@ DEPARTMENTS: list[dict] = [
             role_en="You are [Human Development]. Place the demand this company serves on the arc of human technological development — especially SA's AGI roadmap. Judge whether it is early or mature on the arc, and how many OOMs of runway remain.",
             dims_en=(
                 "- **Which curve**: which main human-development curve does the demand map to (AI compute / energy / other industrialization)\n"
-                "- **OOM positioning (AI-related)**: near which stage 2024(+1)/2026(+2,1GW)/2028(+3,10GW)/2030(+4,100GW); which leg of GPT-2 -> GPT-4 -> 2027 AGI\n"
+                "- **OOM positioning (AI-related)**: near which stage 2024(+1)/2026(+2,1GW)/2028(+3,10GW)/2030(+4,100GW); which leg of GPT-2 -> GPT-4 -> 2027 AGI. Anchor 'today' to the Data Context's fetch date; for milestones already past, check what actually happened rather than assuming the forecast came true\n"
                 "- **Early vs mature**: pre-consensus with OOMs of runway, or near a peak\n"
                 "- **Non-AI assets**: analogize via a broader tech-adoption / industrialization demand curve\n"
                 "- Tao extremes-reverse: near the scarcity-to-glut turn?"
@@ -329,7 +331,7 @@ DEPARTMENTS: list[dict] = [
                 "- **时点对齐**：分清 trailing（年报/TTM）vs 最新季报 vs forward 指引；市场在 price 的通常是 forward——指出弹性是否已被 forward 进价格。"
             ),
             out_zh=(
-                "### 当前价格与日期（必填）：写明「当前价 $X（截至 YYYY-MM-DD）+ 市值」，直接引用 Raw data 里的 Data fetched / Price as of，严禁用记忆中的旧价\n"
+                "### 当前价格与日期（必填）：写明「当前价 X（带数据块中的币种，截至 YYYY-MM-DD）+ 市值」，直接引用 Raw data 里的 Data fetched / Price as of，严禁用记忆中的旧价、严禁自行换算或假定币种\n"
                 "### 一句话（财务健康度 + 弹性是线性还是非线性）\n"
                 "### 基本面要点（逐项标来源 / 缺失）\n"
                 "### 财务弹性量化\n"
@@ -346,7 +348,7 @@ DEPARTMENTS: list[dict] = [
                 "- **Period alignment**: separate trailing (annual/TTM) vs latest quarter vs forward guidance; the market usually prices forward — state whether the elasticity is already priced forward."
             ),
             out_en=(
-                "### Current price & date (required): state 'price $X (as of YYYY-MM-DD) + market cap', quoting the Raw data's Data-fetched / Price-as-of; never use a remembered/older price\n"
+                "### Current price & date (required): state 'price X (in the data block's currency, as of YYYY-MM-DD) + market cap', quoting the Raw data's Data-fetched / Price-as-of; never use a remembered/older price and never assume or convert the currency\n"
                 "### One-line (financial health + elasticity linear or non-linear)\n"
                 "### Fundamentals (cite source / mark missing per item)\n"
                 "### Financial-elasticity quantification\n"
@@ -372,7 +374,8 @@ DEPARTMENTS: list[dict] = [
                 "- **可监控物理信号（持久论·核心）**：盯哪些物理量作为唯一退出信号（backlog 增速 / 产能利用率 / 6N 红磷报价 / PPA 电价 / CoWoS 月产能 / 船只通行），到什么位置重估\n"
                 "- **核心约束**：当前决定全局的最关键一环\n"
                 "- **五维评分**（各 1-5，附理由，不当假精确）：Constraint / Evidence / Consensus / Mispricing / Catalyst。Constraint 受物理部身份约束（非 owner ≤2）；Evidence 须统计 [Inferred]/[Confirmed]（有承重 Inferred 或必需 N/A 不得 5/5）。\n"
-                "- **置信度机械扣分（强制）**：置信度须为下列每一项分别扣减并写明扣了哪些——未做 steelman、承重 [Inferred]、未归因的盈利/利润率异常、缺分部拆解、物理层事实错误。"
+                "- **置信度机械扣分（强制）**：置信度须为下列每一项分别扣减并写明扣了哪些——未做 steelman、承重 [Inferred]、未归因的盈利/利润率异常、缺分部拆解、物理层事实错误。\n"
+                "- **末行机器可读结论（强制）**：报告最后一行必须单独输出 `FINAL DECISION: <标签> | CONFIDENCE: <0-100>/100`，标签只写一个（四选一），该行不写其他任何字。"
             ),
             out_zh=(
                 "### 两轴判定：(a) 瓶颈身份 owner/adjacent/derivative/none ＋ (b) 定价位置 便宜/合理/晚了/超调\n"
@@ -381,12 +384,13 @@ DEPARTMENTS: list[dict] = [
                 "### 一句话反共识 headline\n"
                 "### Steelman（相反 verdict 最强版）+ Munger 反向（≥1 活证伪；若全 unlikely 则声明反向失败并降置信）\n"
                 "### 行业龙头 / 纯瓶颈供应商分组\n"
-                "### 定价位置复核（标明当前价 $X 与日期 + 涨幅归因 + 是否「晚了」）\n"
+                "### 定价位置复核（标明当前价（带币种）与日期 + 涨幅归因 + 是否「晚了」）\n"
                 "### 分部拆解（若 AI 分部<25%：单独五步链 + 非 AI 基本盘）\n"
                 "### 可监控物理信号（退出依据，持久论）\n"
                 "### 五维评分（Constraint/Evidence/Consensus/Mispricing/Catalyst）\n"
                 "### 核心约束 + 失效条件\n"
-                "### 风险提示：本报告非投资建议，最终决策由你自行做出"
+                "### 风险提示：本报告非投资建议，最终决策由你自行做出\n"
+                "（最后单独一行输出机器可读结论：`FINAL DECISION: <标签> | CONFIDENCE: <数字>/100`）"
             ),
             role_en="You are [Leaders & Verdict], the institute's closer. Integrate the four upstream departments, name the leaders / pure-play bottleneck suppliers, recheck the market's pricing position, and give monitorable physical signals and a final verdict. You MUST output one explicit final decision label.",
             dims_en=(
@@ -399,7 +403,8 @@ DEPARTMENTS: list[dict] = [
                 "- **Monitorable physical signals (core)**: which physical quantities to watch as the only exit signal (backlog growth / capacity utilization / 6N red-phosphorus quotes / PPA power prices / monthly CoWoS capacity / ship transits), and at what level to re-evaluate\n"
                 "- **Core constraint**: the single most decisive link right now\n"
                 "- **Five-dimension score** (1-5 each, with reasons, not fake precision): Constraint / Evidence / Consensus / Mispricing / Catalyst. Constraint is bounded by Physical's identity (non-owner <=2); Evidence must count [Inferred]/[Confirmed] (no 5/5 if a load-bearing claim is [Inferred] or required data is N/A).\n"
-                "- **Mechanical confidence penalties (required)**: reduce confidence for each of, and state which applied — no steelman done, load-bearing [Inferred], unattributed earnings/margin anomaly, missing segment breakdown, physical-layer factual error."
+                "- **Mechanical confidence penalties (required)**: reduce confidence for each of, and state which applied — no steelman done, load-bearing [Inferred], unattributed earnings/margin anomaly, missing segment breakdown, physical-layer factual error.\n"
+                "- **Machine-readable last line (required)**: the report's final line must be exactly `FINAL DECISION: <label> | CONFIDENCE: <0-100>/100`, with a single label (one of the four) and nothing else on that line."
             ),
             out_en=(
                 "### Two axes: (a) bottleneck identity owner/adjacent/derivative/none + (b) pricing position cheap/fair/late/overshoot\n"
@@ -408,12 +413,13 @@ DEPARTMENTS: list[dict] = [
                 "### One-line reverse-consensus headline\n"
                 "### Steelman (strongest opposite verdict) + Munger inversion (>=1 live falsifier; if all 'unlikely', declare inversion failed and lower confidence)\n"
                 "### Leaders / pure-play bottleneck suppliers grouping\n"
-                "### Pricing-position recheck (current price $X + date + move attribution + 'too late'?)\n"
+                "### Pricing-position recheck (current price with currency + date + move attribution + 'too late'?)\n"
                 "### Segment breakdown (if AI segment <25%: separate 5-step chain + non-AI base)\n"
                 "### Monitorable physical signals (exit basis)\n"
                 "### Five-dimension score (Constraint/Evidence/Consensus/Mispricing/Catalyst)\n"
                 "### Core constraint + invalidation conditions\n"
-                "### Disclaimer: not investment advice; the final decision is yours"
+                "### Disclaimer: not investment advice; the final decision is yours\n"
+                "(then one standalone final line: `FINAL DECISION: <label> | CONFIDENCE: <number>/100`)"
             ),
         ),
     },

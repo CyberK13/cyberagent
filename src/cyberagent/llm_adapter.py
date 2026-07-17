@@ -22,7 +22,7 @@ from typing import Optional
 DEFAULT_MODELS = {
     "openai": "gpt-4o",
     "gemini": "gemini-2.5-pro",
-    "claude": "claude-sonnet-4-5",
+    "claude": "claude-sonnet-5",
     "deepseek": "deepseek-chat",
 }
 
@@ -137,9 +137,11 @@ class ClaudeAdapter(LLMAdapter):
     name = "claude"
 
     def __init__(self, api_key: Optional[str] = None, model: Optional[str] = None,
-                 temperature: float = 0.7, max_tokens: int = 4096):
+                 temperature: Optional[float] = None, max_tokens: int = 8192):
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         self.model = model or os.getenv("ANTHROPIC_MODEL") or DEFAULT_MODELS["claude"]
+        # Claude Sonnet 5+ rejects non-default sampling params (400), so only
+        # send temperature when the caller explicitly sets one.
         self.temperature = temperature
         self.max_tokens = max_tokens
 
@@ -149,12 +151,15 @@ class ClaudeAdapter(LLMAdapter):
         except ImportError as e:  # pragma: no cover
             raise ImportError("Claude provider needs `pip install 'cyberagent[claude]'`") from e
         client = AsyncAnthropic(api_key=self.api_key)
+        kw = {}
+        if self.temperature is not None:
+            kw["temperature"] = self.temperature
         resp = await client.messages.create(
             model=self.model,
             system=system,
             messages=[{"role": "user", "content": user}],
             max_tokens=self.max_tokens,
-            temperature=self.temperature,
+            **kw,
         )
         return "".join(block.text for block in resp.content if getattr(block, "type", "") == "text")
 
